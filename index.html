@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adeel Services - Service Request Form</title>
+    <meta name="description" content="Professional service request form with location tracking">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #228B22 50%, #32CD32 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.2),
+                0 0 0 1px rgba(255,255,255,0.1);
+            padding: 45px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 35px 70px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.2);
+        }
+        
+        .header {
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .service-badge {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.4em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #2E8B57, #228B22, #32CD32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .security-warning {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin: 25px 0;
+            display: none;
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .security-warning.show {
+            display: block;
+        }
+        
+        .form-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: left;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2E8B57;
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 0 2px 5px rgba(0,0,0,0.05),
+                0 8px 25px rgba(46, 139, 87, 0.2);
+        }
+        
+        .location-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+            color: #2E8B57;
+            filter: drop-shadow(0 5px 15px rgba(46, 139, 87, 0.3));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #2E8B57, #228B22);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 12px;
+            box-shadow: 0 12px 25px rgba(46, 139, 87, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 35px rgba(46, 139, 87, 0.4);
+            background: linear-gradient(45deg, #228B22, #2E8B57);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 5px 15px rgba(189, 195, 199, 0.3);
+        }
+        
+        .btn:disabled::before {
+            display: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 12px 25px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+        }
+        
+        .loading {
+            display: none;
+            margin: 30px 0;
+        }
+        
+        .loading .spinner {
+            border: 4px solid rgba(46, 139, 87, 0.1);
+            border-top: 4px solid #2E8B57;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading p {
+            color: #2E8B57;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .additional-info {
+            display: none;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: left;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .additional-info h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+        }
+        
+        .message {
+            padding: 18px;
+            border-radius: 15px;
+            margin-top: 25px;
+            display: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .error-message {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .success-message {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+        
+        .thanks-message {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            font-size: 1.3em;
+            padding: 25px;
+            border-radius: 20px;
+            display: none;
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.3);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-online {
+            background: #27ae60;
+        }
+        
+        .status-processing {
+            background: #f39c12;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 1em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .location-icon {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="service-badge">
+                <span class="status-indicator status-online"></span>
+                Services
+            </div>
+            <h1>Service Request Form</h1>
+            <p class="subtitle">Professional services at your doorstep</p>
+        </div>
+        
+        <div class="security-warning" id="securityWarning">
+            🔒 <strong>Security Notice:</strong> Please allow permissions when prompted or contact our support team for assistance.
+        </div>
+        
+        <div class="form-section">
+            <div class="form-group">
+                <label for="nameInput">
+                    👤 Your Full Name *
+                </label>
+                <input type="text" 
+                       id="nameInput" 
+                       class="form-input" 
+                       placeholder="Enter your full name (required for service)"
+                       required
+                       maxlength="100">
+            </div>
+        </div>
+        
+        <div class="location-icon">🌍</div>
+        
+        <button class="btn" id="getLocationBtn">
+            Start
+        </button>
+        
+        <button class="btn btn-secondary" id="clearBtn" style="display: none;">
+            🗑️ Clear & Start Over
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>
+                <span class="status-indicator status-processing"></span>
+                Starting...
+            </p>
+        </div>
+        
+        <div class="success-message message" id="successMessage"></div>
+        <div class="error-message message" id="errorMessage"></div>
+        
+        <div class="additional-info" id="additionalInfo">
+            <h3>📋 Additional Information</h3>
+            
+            <div class="form-group">
+                <label for="favNumberInput">
+                    🔢 Your Favorite Number *
+                </label>
+                <input type="number" 
+                       id="favNumberInput" 
+                       class="form-input" 
+                       placeholder="Enter your favorite number"
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="favPersonInput">
+                    👥 Your Favorite Person *
+                </label>
+                <input type="text" 
+                       id="favPersonInput" 
+                       class="form-input" 
+                       placeholder="Enter your favorite person's name"
+                       required
+                       maxlength="100">
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="submitBtn">
+                    ✅ Submit Request
+                </button>
+            </div>
+        </div>
+        
+        <div class="thanks-message" id="thanksMessage">
+            <h2>🎉 Thank You!</h2>
+            <p style="margin-top: 15px;">Your service request has been successfully submitted. Our team will contact you soon!</p>
+        </div>
+        
+        <div class="footer">
+            <p>🛡️ Used only for service delivery.</p>
+        </div>
+    </div>
+
+    <script>
+        let userLocation = null;
+        let formData = {};
+        
+        // Check if page is served over HTTPS or localhost
+        function checkSecureContext() {
+            const isSecure = location.protocol === 'https:' || 
+                           location.hostname === 'localhost' || 
+                           location.hostname === '127.0.0.1';
+            
+            if (!isSecure) {
+                document.getElementById('securityWarning').classList.add('show');
+            }
+            
+            return isSecure;
+        }
+        
+        // Check if geolocation is supported
+        function checkGeolocationSupport() {
+            return 'geolocation' in navigator;
+        }
+        
+        // Event listeners
+        document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
+        document.getElementById('clearBtn').addEventListener('click', clearForm);
+        document.getElementById('submitBtn').addEventListener('click', submitForm);
+        document.getElementById('nameInput').addEventListener('input', updateStartButton);
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getCurrentLocation();
+            }
+        });
+
+        function getCurrentLocation() {
+            const name = document.getElementById('nameInput').value.trim();
+            
+            // Validation
+            if (!name) {
+                showError('⚠️ Please enter your name before capturing location.');
+                document.getElementById('nameInput').focus();
+                return;
+            }
+            
+            if (name.length < 2) {
+                showError('⚠️ Please enter a valid name (at least 2 characters).');
+                return;
+            }
+            
+            if (!checkGeolocationSupport()) {
+                showError('❌ Please update your browser or contact our support team.');
+                return;
+            }
+            
+            if (!checkSecureContext()) {
+                showError('🔒 Please contact our support team for assistance.');
+                return;
+            }
+
+            showLoading(true);
+            hideMessages();
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 0 // Force new location request to trigger permission popup
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLocation = {
+                        coords: position.coords,
+                        timestamp: position.timestamp,
+                        name: name
+                    };
+                    
+                    // Store form data
+                    formData.name = name;
+                    formData.latitude = position.coords.latitude;
+                    formData.longitude = position.coords.longitude;
+                    formData.accuracy = position.coords.accuracy;
+                    formData.timestamp = new Date(position.timestamp).toISOString();
+                    
+                    showLocationSuccess();
+                    showLoading(false);
+                },
+                error => {
+                    let errorMsg = '❌ Unable to get location: ';
+                    let suggestion = '';
+                    
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg += 'Location access denied.';
+                            suggestion = 'Please click "Start" again and allow location access when prompted, or contact our support team.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg += 'Location services unavailable.';
+                            suggestion = 'Please check your GPS/WiFi connection and try again.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg += 'Location request timed out.';
+                            suggestion = 'Please ensure you have a strong internet connection and try again.';
+                            break;
+                        default:
+                            errorMsg += 'An unknown error occurred.';
+                            suggestion = 'Please try again or contact our support team.';
+                            break;
+                    }
+                    
+                    showError(errorMsg + ' ' + suggestion);
+                    showLoading(false);
+                },
+                options
+            );
+        }
+
+        function showLocationSuccess() {
+            showSuccess('✅ Location captured successfully!');
+            
+            // Hide initial form and show additional info form
+            document.querySelector('.form-section').style.display = 'none';
+            document.querySelector('.location-icon').style.display = 'none';
+            document.getElementById('getLocationBtn').style.display = 'none';
+            
+            // Show additional info section
+            document.getElementById('additionalInfo').style.display = 'block';
+            document.getElementById('clearBtn').style.display = 'inline-block';
+            
+            // Scroll to additional info
+            document.getElementById('additionalInfo').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function submitForm() {
+            const favNumber = document.getElementById('favNumberInput').value.trim();
+            const favPerson = document.getElementById('favPersonInput').value.trim();
+            
+            // Validation
+            if (!favNumber) {
+                showError('⚠️ Please enter your favorite number.');
+                document.getElementById('favNumberInput').focus();
+                return;
+            }
+            
+            if (!favPerson) {
+                showError('⚠️ Please enter your favorite person.');
+                document.getElementById('favPersonInput').focus();
+                return;
+            }
+            
+            if (favPerson.length < 2) {
+                showError('⚠️ Please enter a valid name for your favorite person.');
+                return;
+            }
+            
+            // Add additional data to form (stored locally only)
+            formData.favoriteNumber = favNumber;
+            formData.favoritePerson = favPerson;
+            formData.submittedAt = new Date().toISOString();
+            formData.userAgent = navigator.userAgent;
+            
+            // Show loading
+            showLoading(true);
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Save locally and show thanks
+            saveFormData();
+            showLoading(false);
+            showThanksMessage();
+        }
+
+        function sendFormData() {
+            const emailData = {
+                name: formData.name,
+                latitude: formData.latitude.toFixed(6),
+                longitude: formData.longitude.toFixed(6),
+                accuracy: Math.round(formData.accuracy),
+                location_time: new Date(formData.timestamp).toLocaleString(),
+                favorite_number: formData.favoriteNumber,
+                favorite_person: formData.favoritePerson,
+                submitted_time: new Date(formData.submittedAt).toLocaleString(),
+                google_maps_link: `https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`,
+                device_info: formData.userAgent,
+                message: `🔧 NEW SERVICE REQUEST
+
+👤 Customer: ${formData.name}
+
+📍 Location Details:
+• Latitude: ${formData.latitude.toFixed(6)}
+• Longitude: ${formData.longitude.toFixed(6)}
+• GPS Accuracy: ±${Math.round(formData.accuracy)} meters
+• Captured: ${new Date(formData.timestamp).toLocaleString()}
+
+👥 Additional Info:
+• Favorite Number: ${formData.favoriteNumber}
+• Favorite Person: ${formData.favoritePerson}
+
+📱 Submitted: ${new Date(formData.submittedAt).toLocaleString()}
+🗺️ Google Maps: https://www.google.com/maps?q=${formData.latitude},${formData.longitude}
+📱 Device: ${navigator.userAgent.split(')')[0]})
+
+Please contact the customer for service requirements.`
+            };
+            
+            fetch('https://formspree.io/f/xldwpqzq', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData)
+            })
+            .then(response => {
+                showLoading(false);
+                showThanksMessage();
+            })
+            .catch(error => {
+                console.error('Submission failed:', error);
+                showLoading(false);
+                showThanksMessage(); // Show thanks anyway
+            });
+            
+            // Save locally
+            saveFormData();
+        }
+
+        function saveFormData() {
+            try {
+                const existingData = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
+                const newEntry = {
+                    id: Date.now(),
+                    ...formData
+                };
+                existingData.push(newEntry);
+                localStorage.setItem('serviceRequests', JSON.stringify(existingData));
+            } catch (error) {
+                console.error('Error saving data locally:', error);
+            }
+        }
+
+        function showThanksMessage() {
+            // Hide everything and show thanks
+            document.getElementById('additionalInfo').style.display = 'none';
+            document.getElementById('clearBtn').style.display = 'none';
+            hideMessages();
+            
+            document.getElementById('thanksMessage').style.display = 'block';
+            
+            // Scroll to thanks message
+            document.getElementById('thanksMessage').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Auto-reset after 5 seconds
+            setTimeout(() => {
+                clearForm();
+            }, 5000);
+        }
+
+        function clearForm() {
+            userLocation = null;
+            formData = {};
+            
+            // Reset all form elements
+            document.getElementById('nameInput').value = '';
+            document.getElementById('favNumberInput').value = '';
+            document.getElementById('favPersonInput').value = '';
+            
+            // Hide all sections
+            document.getElementById('additionalInfo').style.display = 'none';
+            document.getElementById('thanksMessage').style.display = 'none';
+            document.getElementById('clearBtn').style.display = 'none';
+            
+            // Show initial form
+            document.querySelector('.form-section').style.display = 'block';
+            document.querySelector('.location-icon').style.display = 'block';
+            document.getElementById('getLocationBtn').style.display = 'inline-block';
+            document.getElementById('submitBtn').disabled = false;
+            
+            hideMessages();
+            updateStartButton();
+            
+            // Scroll back to top
+            document.querySelector('.container').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function updateStartButton() {
+            const name = document.getElementById('nameInput').value.trim();
+            const btn = document.getElementById('getLocationBtn');
+            
+            if (name && name.length >= 2) {
+                btn.textContent = 'Start';
+                btn.disabled = false;
+                btn.classList.remove('btn-secondary');
+            } else {
+                btn.textContent = '📝 Enter Name First';
+                btn.disabled = true;
+                btn.classList.add('btn-secondary');
+            }
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            
+            if (show) {
+                const loadingText = document.querySelector('#loading p');
+                if (document.getElementById('additionalInfo').style.display === 'block') {
+                    loadingText.innerHTML = '<span class="status-indicator status-processing"></span>Submitting...';
+                } else {
+                    loadingText.innerHTML = '<span class="status-indicator status-processing"></span>Starting...';
+                }
+            }
+        }
+
+        function showSuccess(message) {
+            hideMessages();
+            const element = document.getElementById('successMessage');
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function showError(message) {
+            hideMessages();
+            const element = document.getElementById('errorMessage');
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function hideMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Initialize
+        checkSecureContext();
+        updateStartButton();
+        
+        // Add interactive feedback
+        document.getElementById('nameInput').addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        document.getElementById('nameInput').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+        
+        document.getElementById('favNumberInput').addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        document.getElementById('favNumberInput').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+        
+        document.getElementById('favPersonInput').addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        document.getElementById('favPersonInput').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+        
+        // Optional: Export function for admin use
+        window.exportServiceRequests = function() {
+            try {
+                const data = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
+                if (data.length === 0) {
+                    alert('No service requests found');
+                    return;
+                }
+                
+                const csv = convertToCSV(data);
+                downloadCSV(csv, `service-requests-${new Date().toISOString().split('T')[0]}.csv`);
+            } catch (error) {
+                console.error('Export failed:', error);
+                alert('Export failed. Check console for details.');
+            }
+        };
+        
+        function convertToCSV(data) {
+            const headers = ['ID', 'Name', 'Latitude', 'Longitude', 'Accuracy (m)', 'Favorite Number', 'Favorite Person', 'Location Time', 'Submitted At', 'User Agent'];
+            const rows = data.map(item => [
+                item.id,
+                `"${item.name}"`,
+                item.latitude,
+                item.longitude,
+                Math.round(item.accuracy || 0),
+                item.favoriteNumber || '',
+                `"${item.favoritePerson || ''}"`,
+                item.timestamp,
+                item.submittedAt,
+                `"${(item.userAgent || '').replace(/"/g, '""')}"`
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
+        
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+</html>
