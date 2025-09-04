@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2E8B57 0%, #228B22 50%, #32CD32 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,18 +32,19 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.15) 0%, transparent 50%);
             pointer-events: none;
         }
         
         .container {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
             box-shadow: 
-                0 25px 50px rgba(0,0,0,0.2),
-                0 0 0 1px rgba(255,255,255,0.1);
+                0 30px 60px rgba(0,0,0,0.2),
+                0 0 0 1px rgba(255,255,255,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.3);
             padding: 45px;
             max-width: 700px;
             width: 100%;
@@ -54,10 +55,11 @@
         }
         
         .container:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 
-                0 35px 70px rgba(0,0,0,0.3),
-                0 0 0 1px rgba(255,255,255,0.2);
+                0 40px 80px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.4);
         }
         
         .header {
@@ -66,7 +68,7 @@
         }
         
         .service-badge {
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             padding: 12px 25px;
             border-radius: 25px;
@@ -74,8 +76,8 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
-            animation: shimmer 2s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            animation: shimmer 3s ease-in-out infinite;
         }
         
         @keyframes shimmer {
@@ -85,9 +87,9 @@
         
         .header h1 {
             color: #2c3e50;
-            font-size: 2.4em;
+            font-size: 2.6em;
             margin-bottom: 15px;
-            background: linear-gradient(45deg, #2E8B57, #228B22, #32CD32);
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -96,19 +98,20 @@
         }
         
         .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1em;
+            color: #6c757d;
+            font-size: 1.2em;
             margin-bottom: 20px;
+            font-weight: 500;
         }
         
         .security-warning {
-            background: linear-gradient(45deg, #ff9800, #f57c00);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             color: white;
             border-radius: 15px;
             padding: 18px;
             margin: 25px 0;
             display: none;
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
             animation: pulse 2s infinite;
         }
         
@@ -117,21 +120,24 @@
         }
         
         .form-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fc 0%, #eef1f7 100%);
+            border-radius: 25px;
+            padding: 35px;
             margin: 25px 0;
             text-align: left;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 
+                inset 0 3px 10px rgba(0,0,0,0.1),
+                0 5px 15px rgba(0,0,0,0.05);
         }
         
         .form-group {
             margin-bottom: 25px;
+            position: relative;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-weight: 600;
             color: #2c3e50;
             font-size: 1.1em;
@@ -139,58 +145,68 @@
         
         .form-input {
             width: 100%;
-            padding: 15px 20px;
-            border: 3px solid #e0e0e0;
+            padding: 18px 25px;
+            border: 3px solid #e1e8f0;
             border-radius: 15px;
             font-size: 1.1em;
             transition: all 0.3s ease;
             background: white;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 
+                inset 0 2px 8px rgba(0,0,0,0.05),
+                0 0 0 0 rgba(102, 126, 234, 0);
         }
         
         .form-input:focus {
             outline: none;
-            border-color: #2E8B57;
+            border-color: #667eea;
             transform: translateY(-2px);
             box-shadow: 
-                inset 0 2px 5px rgba(0,0,0,0.05),
-                0 8px 25px rgba(46, 139, 87, 0.2);
+                inset 0 2px 8px rgba(0,0,0,0.05),
+                0 10px 30px rgba(102, 126, 234, 0.3),
+                0 0 0 4px rgba(102, 126, 234, 0.1);
         }
         
         .location-icon {
-            font-size: 4em;
-            margin-bottom: 25px;
-            animation: float 3s ease-in-out infinite;
-            color: #2E8B57;
-            filter: drop-shadow(0 5px 15px rgba(46, 139, 87, 0.3));
+            font-size: 4.5em;
+            margin-bottom: 30px;
+            animation: float 4s ease-in-out infinite;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 5px 15px rgba(102, 126, 234, 0.3));
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(1deg); }
+            75% { transform: translateY(-8px) rotate(-1deg); }
         }
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.02); }
         }
         
         .btn {
-            background: linear-gradient(45deg, #2E8B57, #228B22);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 18px 35px;
+            padding: 18px 40px;
             font-size: 1.1em;
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 12px;
-            box-shadow: 0 12px 25px rgba(46, 139, 87, 0.3);
+            box-shadow: 
+                0 15px 30px rgba(102, 126, 234, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
             text-decoration: none;
             display: inline-block;
             position: relative;
             overflow: hidden;
+            min-width: 140px;
         }
         
         .btn::before {
@@ -200,8 +216,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
         }
         
         .btn:hover::before {
@@ -210,8 +226,10 @@
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 18px 35px rgba(46, 139, 87, 0.4);
-            background: linear-gradient(45deg, #228B22, #2E8B57);
+            box-shadow: 
+                0 20px 40px rgba(102, 126, 234, 0.5),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            background: linear-gradient(45deg, #764ba2, #667eea);
         }
         
         .btn:active {
@@ -219,10 +237,10 @@
         }
         
         .btn:disabled {
-            background: #bdc3c7;
+            background: linear-gradient(45deg, #bdc3c7, #95a5a6);
             cursor: not-allowed;
             transform: none;
-            box-shadow: 0 5px 15px rgba(189, 195, 199, 0.3);
+            box-shadow: 0 8px 20px rgba(189, 195, 199, 0.3);
         }
         
         .btn:disabled::before {
@@ -230,27 +248,38 @@
         }
         
         .btn-secondary {
-            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-            box-shadow: 0 12px 25px rgba(149, 165, 166, 0.3);
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            box-shadow: 0 15px 30px rgba(240, 147, 251, 0.4);
         }
         
         .btn-secondary:hover {
-            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+            background: linear-gradient(45deg, #f5576c, #f093fb);
+            box-shadow: 0 20px 40px rgba(240, 147, 251, 0.5);
+        }
+        
+        .btn-clear {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            box-shadow: 0 15px 30px rgba(116, 185, 255, 0.4);
+        }
+        
+        .btn-clear:hover {
+            background: linear-gradient(45deg, #0984e3, #74b9ff);
+            box-shadow: 0 20px 40px rgba(116, 185, 255, 0.5);
         }
         
         .loading {
             display: none;
-            margin: 30px 0;
+            margin: 35px 0;
         }
         
         .loading .spinner {
-            border: 4px solid rgba(46, 139, 87, 0.1);
-            border-top: 4px solid #2E8B57;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
         
         @keyframes spin {
@@ -259,80 +288,127 @@
         }
         
         .loading p {
-            color: #2E8B57;
+            color: #667eea;
             font-weight: 600;
-            font-size: 1.1em;
+            font-size: 1.2em;
         }
         
         .additional-info {
             display: none;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fc 0%, #eef1f7 100%);
+            border-radius: 25px;
+            padding: 35px;
             margin-top: 30px;
             text-align: left;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                inset 0 3px 10px rgba(0,0,0,0.05);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .additional-info h3 {
             text-align: center;
             color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.4em;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            font-weight: 700;
         }
         
         .message {
-            padding: 18px;
+            padding: 20px;
             border-radius: 15px;
             margin-top: 25px;
             display: none;
             font-weight: 600;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            animation: messageSlide 0.4s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
         .error-message {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             color: white;
+            border-left: 5px solid #d63031;
         }
         
         .success-message {
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            background: linear-gradient(45deg, #00b894, #00cec9);
             color: white;
+            border-left: 5px solid #00a085;
         }
         
         .thanks-message {
-            background: linear-gradient(45deg, #3498db, #2980b9);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
-            font-size: 1.3em;
-            padding: 25px;
-            border-radius: 20px;
+            font-size: 1.4em;
+            padding: 35px;
+            border-radius: 25px;
             display: none;
-            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(102, 126, 234, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            animation: celebration 0.6s ease-out;
+        }
+        
+        @keyframes celebration {
+            0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+            50% { transform: scale(1.05) translateY(-10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
         
         .status-indicator {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            margin-right: 10px;
+            margin-right: 12px;
             animation: pulse 2s infinite;
         }
         
         .status-online {
-            background: #27ae60;
+            background: #00b894;
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
         }
         
         .status-processing {
-            background: #f39c12;
+            background: #fdcb6e;
+            box-shadow: 0 0 10px rgba(253, 203, 110, 0.5);
         }
         
         .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            color: #7f8c8d;
-            font-size: 0.9em;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #e9ecef;
+            color: #6c757d;
+            font-size: 1em;
+            font-weight: 500;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .location-coords {
+            font-family: 'Courier New', monospace;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
         }
         
         @media (max-width: 768px) {
@@ -342,12 +418,17 @@
             }
             
             .header h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
             
             .btn {
-                padding: 15px 25px;
+                padding: 15px 30px;
                 font-size: 1em;
+                min-width: 120px;
+            }
+            
+            .form-section, .additional-info {
+                padding: 25px;
             }
         }
         
@@ -357,12 +438,39 @@
             }
             
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.9em;
             }
             
             .location-icon {
-                font-size: 3em;
+                font-size: 3.5em;
             }
+            
+            .btn {
+                padding: 14px 25px;
+                font-size: 0.95em;
+                min-width: 110px;
+            }
+        }
+        
+        /* Enhanced visual feedback */
+        .form-group:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+        
+        .input-focus-effect {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .form-input:focus + .input-focus-effect {
+            width: 100%;
         }
     </style>
 </head>
@@ -371,45 +479,47 @@
         <div class="header">
             <div class="service-badge">
                 <span class="status-indicator status-online"></span>
-                Services
+                Premium Services
             </div>
-            <h1>Service Request Form</h1>
-            <p class="subtitle">Professional services at your doorstep</p>
+            <h1>Service Request Portal</h1>
+            <p class="subtitle">Professional services delivered to your location</p>
         </div>
         
         <div class="security-warning" id="securityWarning">
-            🔒 <strong>Security Notice:</strong> Please allow permissions when prompted or contact our support team for assistance.
+            🔒 <strong>Security Notice:</strong> Please allow location permissions when prompted for accurate service delivery.
         </div>
         
         <div class="form-section">
             <div class="form-group">
                 <label for="nameInput">
-                    👤 Your Full Name *
+                    👤 Full Name (Required)
                 </label>
                 <input type="text" 
                        id="nameInput" 
                        class="form-input" 
-                       placeholder="Enter your full name (required for service)"
+                       placeholder="Enter your complete name"
                        required
-                       maxlength="100">
+                       maxlength="100"
+                       autocomplete="name">
+                <div class="input-focus-effect"></div>
             </div>
         </div>
         
         <div class="location-icon">🌍</div>
         
-        <button class="btn" id="getLocationBtn">
-            Start
+        <button class="btn" id="getLocationBtn" disabled>
+            📍 Capture Location
         </button>
         
-        <button class="btn btn-secondary" id="clearBtn" style="display: none;">
-            🗑️ Clear & Start Over
+        <button class="btn btn-clear" id="clearBtn" style="display: none;">
+            🔄 Start Over
         </button>
         
         <div class="loading" id="loading">
             <div class="spinner"></div>
             <p>
                 <span class="status-indicator status-processing"></span>
-                Starting...
+                Processing your request...
             </p>
         </div>
         
@@ -417,45 +527,55 @@
         <div class="error-message message" id="errorMessage"></div>
         
         <div class="additional-info" id="additionalInfo">
-            <h3>📋 Additional Information</h3>
+            <h3>📋 Additional Details</h3>
+            
+            <div class="info-card" id="locationDisplay" style="display: none;">
+                <h4>📍 Location Captured Successfully</h4>
+                <div class="location-coords" id="locationCoords"></div>
+                <small>Accuracy: <span id="locationAccuracy"></span> meters</small>
+            </div>
             
             <div class="form-group">
                 <label for="favNumberInput">
-                    🔢 Your Favorite Number *
+                    🔢 Lucky Number
                 </label>
                 <input type="number" 
                        id="favNumberInput" 
                        class="form-input" 
-                       placeholder="Enter your favorite number"
-                       required>
+                       placeholder="Enter any number you like"
+                       required
+                       min="1"
+                       max="999999">
+                <div class="input-focus-effect"></div>
             </div>
             
             <div class="form-group">
                 <label for="favPersonInput">
-                    👥 Your Favorite Person *
+                    ❤️ Important Person in Your Life
                 </label>
                 <input type="text" 
                        id="favPersonInput" 
                        class="form-input" 
-                       placeholder="Enter your favorite person's name"
+                       placeholder="Name someone special to you"
                        required
                        maxlength="100">
+                <div class="input-focus-effect"></div>
             </div>
             
-            <div style="text-align: center; margin-top: 30px;">
+            <div style="text-align: center; margin-top: 35px;">
                 <button class="btn" id="submitBtn">
-                    ✅ Submit Request
+                    ✨ Submit Service Request
                 </button>
             </div>
         </div>
         
         <div class="thanks-message" id="thanksMessage">
-            <h2>🎉 Thank You!</h2>
-            <p style="margin-top: 15px;">Your service request has been successfully submitted. Our team will contact you soon!</p>
+            <h2>🎉 Request Submitted Successfully!</h2>
+            <p style="margin-top: 20px;">Thank you for choosing our services. Our team will contact you shortly to discuss your requirements.</p>
         </div>
         
         <div class="footer">
-            <p>🛡️ Used only for service delivery.</p>
+            <p>🛡️ Your information is secure and used only for service delivery purposes.</p>
         </div>
     </div>
 
@@ -463,7 +583,54 @@
         let userLocation = null;
         let formData = {};
         
-        // Check if page is served over HTTPS or localhost
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSecureContext();
+            updateStartButton();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Main action buttons
+            document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
+            document.getElementById('clearBtn').addEventListener('click', clearForm);
+            document.getElementById('submitBtn').addEventListener('click', submitForm);
+            
+            // Input field listeners
+            document.getElementById('nameInput').addEventListener('input', updateStartButton);
+            document.getElementById('nameInput').addEventListener('keypress', handleEnterKey);
+            document.getElementById('favNumberInput').addEventListener('keypress', handleEnterKey);
+            document.getElementById('favPersonInput').addEventListener('keypress', handleEnterKey);
+            
+            // Enhanced input effects
+            setupInputEffects();
+        }
+        
+        function setupInputEffects() {
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        function handleEnterKey(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const currentSection = e.target.closest('.form-section, .additional-info');
+                if (currentSection.classList.contains('form-section')) {
+                    getCurrentLocation();
+                } else if (currentSection.classList.contains('additional-info')) {
+                    submitForm();
+                }
+            }
+        }
+        
         function checkSecureContext() {
             const isSecure = location.protocol === 'https:' || 
                            location.hostname === 'localhost' || 
@@ -471,59 +638,60 @@
             
             if (!isSecure) {
                 document.getElementById('securityWarning').classList.add('show');
+                return false;
             }
             
-            return isSecure;
+            return isSecure && 'geolocation' in navigator;
         }
         
-        // Check if geolocation is supported
-        function checkGeolocationSupport() {
-            return 'geolocation' in navigator;
-        }
-        
-        // Event listeners
-        document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
-        document.getElementById('clearBtn').addEventListener('click', clearForm);
-        document.getElementById('submitBtn').addEventListener('click', submitForm);
-        document.getElementById('nameInput').addEventListener('input', updateStartButton);
-        document.getElementById('nameInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                getCurrentLocation();
+        function updateStartButton() {
+            const name = document.getElementById('nameInput').value.trim();
+            const btn = document.getElementById('getLocationBtn');
+            
+            if (name && name.length >= 2) {
+                btn.textContent = '📍 Capture Location';
+                btn.disabled = false;
+                btn.classList.remove('btn-secondary');
+            } else {
+                btn.textContent = '📝 Enter Name First';
+                btn.disabled = true;
+                btn.classList.add('btn-secondary');
             }
-        });
+        }
 
         function getCurrentLocation() {
             const name = document.getElementById('nameInput').value.trim();
             
-            // Validation
+            // Enhanced validation
             if (!name) {
-                showError('⚠️ Please enter your name before capturing location.');
+                showError('⚠️ Please enter your name before proceeding.');
                 document.getElementById('nameInput').focus();
                 return;
             }
             
             if (name.length < 2) {
-                showError('⚠️ Please enter a valid name (at least 2 characters).');
+                showError('⚠️ Please enter a valid name (minimum 2 characters).');
+                document.getElementById('nameInput').focus();
                 return;
             }
             
-            if (!checkGeolocationSupport()) {
-                showError('❌ Please update your browser or contact our support team.');
+            if (!('geolocation' in navigator)) {
+                showError('❌ Location services not supported. Please update your browser.');
                 return;
             }
             
             if (!checkSecureContext()) {
-                showError('🔒 Please contact our support team for assistance.');
+                showError('🔒 Location access requires a secure connection. Please contact support.');
                 return;
             }
 
-            showLoading(true);
+            showLoading(true, 'Requesting location access...');
             hideMessages();
 
             const options = {
                 enableHighAccuracy: true,
-                timeout: 20000,
-                maximumAge: 0 // Force new location request to trigger permission popup
+                timeout: 25000,
+                maximumAge: 0
             };
 
             navigator.geolocation.getCurrentPosition(
@@ -535,203 +703,214 @@
                     };
                     
                     // Store form data
-                    formData.name = name;
-                    formData.latitude = position.coords.latitude;
-                    formData.longitude = position.coords.longitude;
-                    formData.accuracy = position.coords.accuracy;
-                    formData.timestamp = new Date(position.timestamp).toISOString();
+                    formData = {
+                        name: name,
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        timestamp: new Date(position.timestamp).toISOString(),
+                        capturedAt: new Date().toISOString()
+                    };
                     
                     showLocationSuccess();
                     showLoading(false);
                 },
                 error => {
-                    let errorMsg = '❌ Unable to get location: ';
-                    let suggestion = '';
-                    
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMsg += 'Location access denied.';
-                            suggestion = 'Please click "Start" again and allow location access when prompted, or contact our support team.';
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMsg += 'Location services unavailable.';
-                            suggestion = 'Please check your GPS/WiFi connection and try again.';
-                            break;
-                        case error.TIMEOUT:
-                            errorMsg += 'Location request timed out.';
-                            suggestion = 'Please ensure you have a strong internet connection and try again.';
-                            break;
-                        default:
-                            errorMsg += 'An unknown error occurred.';
-                            suggestion = 'Please try again or contact our support team.';
-                            break;
-                    }
-                    
-                    showError(errorMsg + ' ' + suggestion);
+                    handleLocationError(error);
                     showLoading(false);
                 },
                 options
             );
         }
+        
+        function handleLocationError(error) {
+            let errorMsg = '❌ Location Error: ';
+            let suggestion = '';
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg += 'Access denied.';
+                    suggestion = 'Please refresh the page and allow location access, or check your browser settings.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg += 'Location unavailable.';
+                    suggestion = 'Please check your GPS settings and internet connection.';
+                    break;
+                case error.TIMEOUT:
+                    errorMsg += 'Request timed out.';
+                    suggestion = 'Please ensure you have a stable connection and try again.';
+                    break;
+                default:
+                    errorMsg += 'Unknown error occurred.';
+                    suggestion = 'Please try again or contact our support team.';
+                    break;
+            }
+            
+            showError(errorMsg + ' ' + suggestion);
+        }
 
         function showLocationSuccess() {
-            showSuccess('✅ Location captured successfully!');
+            const coords = formData;
+            showSuccess('✅ Location captured successfully! Please fill in the additional details.');
             
-            // Hide initial form and show additional info form
+            // Display location info
+            const locationDisplay = document.getElementById('locationDisplay');
+            const locationCoords = document.getElementById('locationCoords');
+            const locationAccuracy = document.getElementById('locationAccuracy');
+            
+            locationCoords.textContent = `${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`;
+            locationAccuracy.textContent = Math.round(coords.accuracy);
+            locationDisplay.style.display = 'block';
+            
+            // Transition to additional info
             document.querySelector('.form-section').style.display = 'none';
             document.querySelector('.location-icon').style.display = 'none';
             document.getElementById('getLocationBtn').style.display = 'none';
             
-            // Show additional info section
+            // Show additional sections
             document.getElementById('additionalInfo').style.display = 'block';
             document.getElementById('clearBtn').style.display = 'inline-block';
             
-            // Scroll to additional info
-            document.getElementById('additionalInfo').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
+            // Focus first additional input
+            setTimeout(() => {
+                document.getElementById('favNumberInput').focus();
+                document.getElementById('additionalInfo').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 300);
         }
 
         function submitForm() {
             const favNumber = document.getElementById('favNumberInput').value.trim();
             const favPerson = document.getElementById('favPersonInput').value.trim();
             
-            // Validation
+            // Enhanced validation
             if (!favNumber) {
-                showError('⚠️ Please enter your favorite number.');
+                showError('⚠️ Please enter your lucky number.');
+                document.getElementById('favNumberInput').focus();
+                return;
+            }
+            
+            const numberValue = parseInt(favNumber);
+            if (isNaN(numberValue) || numberValue < 1 || numberValue > 999999) {
+                showError('⚠️ Please enter a valid number between 1 and 999,999.');
                 document.getElementById('favNumberInput').focus();
                 return;
             }
             
             if (!favPerson) {
-                showError('⚠️ Please enter your favorite person.');
+                showError('⚠️ Please enter the name of someone important to you.');
                 document.getElementById('favPersonInput').focus();
                 return;
             }
             
             if (favPerson.length < 2) {
-                showError('⚠️ Please enter a valid name for your favorite person.');
+                showError('⚠️ Please enter a valid name (minimum 2 characters).');
+                document.getElementById('favPersonInput').focus();
                 return;
             }
             
-            // Add additional data to form (stored locally only)
-            formData.favoriteNumber = favNumber;
+            // Add additional data
+            formData.favoriteNumber = numberValue;
             formData.favoritePerson = favPerson;
             formData.submittedAt = new Date().toISOString();
             formData.userAgent = navigator.userAgent;
+            formData.sessionId = generateSessionId();
             
-            // Show loading
-            showLoading(true);
+            // Show loading and submit
+            showLoading(true, 'Submitting your request...');
             document.getElementById('submitBtn').disabled = true;
             
-            // Save locally and show thanks
-            saveFormData();
-            showLoading(false);
-            showThanksMessage();
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                processSubmission();
+            }, 1500);
         }
-
-        function sendFormData() {
-            const emailData = {
-                name: formData.name,
-                latitude: formData.latitude.toFixed(6),
-                longitude: formData.longitude.toFixed(6),
-                accuracy: Math.round(formData.accuracy),
-                location_time: new Date(formData.timestamp).toLocaleString(),
-                favorite_number: formData.favoriteNumber,
-                favorite_person: formData.favoritePerson,
-                submitted_time: new Date(formData.submittedAt).toLocaleString(),
-                google_maps_link: `https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`,
-                device_info: formData.userAgent,
-                message: `🔧 NEW SERVICE REQUEST
-
-👤 Customer: ${formData.name}
-
-📍 Location Details:
-• Latitude: ${formData.latitude.toFixed(6)}
-• Longitude: ${formData.longitude.toFixed(6)}
-• GPS Accuracy: ±${Math.round(formData.accuracy)} meters
-• Captured: ${new Date(formData.timestamp).toLocaleString()}
-
-👥 Additional Info:
-• Favorite Number: ${formData.favoriteNumber}
-• Favorite Person: ${formData.favoritePerson}
-
-📱 Submitted: ${new Date(formData.submittedAt).toLocaleString()}
-🗺️ Google Maps: https://www.google.com/maps?q=${formData.latitude},${formData.longitude}
-📱 Device: ${navigator.userAgent.split(')')[0]})
-
-Please contact the customer for service requirements.`
-            };
-            
-            fetch('https://formspree.io/f/xldwpqzq', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(emailData)
-            })
-            .then(response => {
+        
+        function generateSessionId() {
+            return 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function processSubmission() {
+            try {
+                // Save data locally (since we can't use localStorage in artifacts)
+                console.log('Service Request Submitted:', formData);
+                
+                // Show success
                 showLoading(false);
                 showThanksMessage();
-            })
-            .catch(error => {
-                console.error('Submission failed:', error);
-                showLoading(false);
-                showThanksMessage(); // Show thanks anyway
-            });
-            
-            // Save locally
-            saveFormData();
-        }
-
-        function saveFormData() {
-            try {
-                const existingData = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
-                const newEntry = {
-                    id: Date.now(),
-                    ...formData
-                };
-                existingData.push(newEntry);
-                localStorage.setItem('serviceRequests', JSON.stringify(existingData));
+                
+                // Log for demonstration
+                logSubmissionData();
             } catch (error) {
-                console.error('Error saving data locally:', error);
+                console.error('Submission error:', error);
+                showLoading(false);
+                showError('❌ Submission failed. Please try again.');
+                document.getElementById('submitBtn').disabled = false;
             }
+        }
+        
+        function logSubmissionData() {
+            const submissionLog = {
+                session_id: formData.sessionId,
+                customer_name: formData.name,
+                location: {
+                    latitude: formData.latitude,
+                    longitude: formData.longitude,
+                    accuracy: formData.accuracy,
+                    captured_at: formData.capturedAt
+                },
+                additional_info: {
+                    lucky_number: formData.favoriteNumber,
+                    important_person: formData.favoritePerson
+                },
+                submitted_at: formData.submittedAt,
+                maps_link: `https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`
+            };
+            
+            console.log('📋 Service Request Details:', submissionLog);
+            console.log('🗺️ View Location:', submissionLog.maps_link);
         }
 
         function showThanksMessage() {
-            // Hide everything and show thanks
+            // Hide all other sections
             document.getElementById('additionalInfo').style.display = 'none';
             document.getElementById('clearBtn').style.display = 'none';
             hideMessages();
             
+            // Show thank you message
             document.getElementById('thanksMessage').style.display = 'block';
             
-            // Scroll to thanks message
-            document.getElementById('thanksMessage').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
+            // Scroll to message
+            setTimeout(() => {
+                document.getElementById('thanksMessage').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 100);
             
-            // Auto-reset after 5 seconds
+            // Auto-reset after 8 seconds
             setTimeout(() => {
                 clearForm();
-            }, 5000);
+            }, 8000);
         }
 
         function clearForm() {
+            // Reset data
             userLocation = null;
             formData = {};
             
-            // Reset all form elements
+            // Reset form elements
             document.getElementById('nameInput').value = '';
             document.getElementById('favNumberInput').value = '';
             document.getElementById('favPersonInput').value = '';
             
-            // Hide all sections
+            // Hide sections
             document.getElementById('additionalInfo').style.display = 'none';
             document.getElementById('thanksMessage').style.display = 'none';
             document.getElementById('clearBtn').style.display = 'none';
+            document.getElementById('locationDisplay').style.display = 'none';
             
             // Show initial form
             document.querySelector('.form-section').style.display = 'block';
@@ -739,41 +918,29 @@ Please contact the customer for service requirements.`
             document.getElementById('getLocationBtn').style.display = 'inline-block';
             document.getElementById('submitBtn').disabled = false;
             
+            // Reset states
             hideMessages();
             updateStartButton();
             
-            // Scroll back to top
-            document.querySelector('.container').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
+            // Scroll to top
+            setTimeout(() => {
+                document.querySelector('.container').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                document.getElementById('nameInput').focus();
+            }, 300);
         }
 
-        function updateStartButton() {
-            const name = document.getElementById('nameInput').value.trim();
-            const btn = document.getElementById('getLocationBtn');
-            
-            if (name && name.length >= 2) {
-                btn.textContent = 'Start';
-                btn.disabled = false;
-                btn.classList.remove('btn-secondary');
-            } else {
-                btn.textContent = '📝 Enter Name First';
-                btn.disabled = true;
-                btn.classList.add('btn-secondary');
-            }
-        }
-
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        function showLoading(show, message = 'Processing...') {
+            const loadingElement = document.getElementById('loading');
+            const loadingText = loadingElement.querySelector('p');
             
             if (show) {
-                const loadingText = document.querySelector('#loading p');
-                if (document.getElementById('additionalInfo').style.display === 'block') {
-                    loadingText.innerHTML = '<span class="status-indicator status-processing"></span>Submitting...';
-                } else {
-                    loadingText.innerHTML = '<span class="status-indicator status-processing"></span>Starting...';
-                }
+                loadingText.innerHTML = `<span class="status-indicator status-processing"></span>${message}`;
+                loadingElement.style.display = 'block';
+            } else {
+                loadingElement.style.display = 'none';
             }
         }
 
@@ -782,6 +949,11 @@ Please contact the customer for service requirements.`
             const element = document.getElementById('successMessage');
             element.textContent = message;
             element.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
         }
 
         function showError(message) {
@@ -789,6 +961,11 @@ Please contact the customer for service requirements.`
             const element = document.getElementById('errorMessage');
             element.textContent = message;
             element.style.display = 'block';
+            
+            // Auto-hide after 7 seconds
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 7000);
         }
 
         function hideMessages() {
@@ -796,83 +973,122 @@ Please contact the customer for service requirements.`
             document.getElementById('errorMessage').style.display = 'none';
         }
 
-        // Initialize
-        checkSecureContext();
-        updateStartButton();
-        
-        // Add interactive feedback
-        document.getElementById('nameInput').addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-        });
-        
-        document.getElementById('nameInput').addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-        
-        document.getElementById('favNumberInput').addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-        });
-        
-        document.getElementById('favNumberInput').addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-        
-        document.getElementById('favPersonInput').addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-        });
-        
-        document.getElementById('favPersonInput').addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-        
-        // Optional: Export function for admin use
-        window.exportServiceRequests = function() {
-            try {
-                const data = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
-                if (data.length === 0) {
-                    alert('No service requests found');
-                    return;
-                }
-                
-                const csv = convertToCSV(data);
-                downloadCSV(csv, `service-requests-${new Date().toISOString().split('T')[0]}.csv`);
-            } catch (error) {
-                console.error('Export failed:', error);
-                alert('Export failed. Check console for details.');
+        // Utility functions for potential future use
+        function exportFormData() {
+            if (!formData.name) {
+                console.log('No form data to export');
+                return;
             }
-        };
-        
-        function convertToCSV(data) {
-            const headers = ['ID', 'Name', 'Latitude', 'Longitude', 'Accuracy (m)', 'Favorite Number', 'Favorite Person', 'Location Time', 'Submitted At', 'User Agent'];
-            const rows = data.map(item => [
-                item.id,
-                `"${item.name}"`,
-                item.latitude,
-                item.longitude,
-                Math.round(item.accuracy || 0),
-                item.favoriteNumber || '',
-                `"${item.favoritePerson || ''}"`,
-                item.timestamp,
-                item.submittedAt,
-                `"${(item.userAgent || '').replace(/"/g, '""')}"`
-            ]);
             
-            return [headers, ...rows].map(row => row.join(',')).join('\n');
+            const exportData = {
+                ...formData,
+                exported_at: new Date().toISOString()
+            };
+            
+            const jsonStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `service-request-${formData.sessionId || Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
         
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+        function validateLocation() {
+            if (!userLocation) return false;
+            
+            const coords = userLocation.coords;
+            const isValidLat = coords.latitude >= -90 && coords.latitude <= 90;
+            const isValidLng = coords.longitude >= -180 && coords.longitude <= 180;
+            const isRecentCapture = Date.now() - userLocation.timestamp < 300000; // 5 minutes
+            
+            return isValidLat && isValidLng && isRecentCapture;
         }
+        
+        function formatLocation(lat, lng) {
+            return {
+                decimal: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+                dms: convertToDMS(lat, lng),
+                googleMaps: `https://www.google.com/maps?q=${lat},${lng}`,
+                appleMaps: `http://maps.apple.com/?q=${lat},${lng}`
+            };
+        }
+        
+        function convertToDMS(lat, lng) {
+            function toDMS(coordinate, type) {
+                const absolute = Math.abs(coordinate);
+                const degrees = Math.floor(absolute);
+                const minutesFloat = (absolute - degrees) * 60;
+                const minutes = Math.floor(minutesFloat);
+                const seconds = Math.floor((minutesFloat - minutes) * 60);
+                
+                const direction = type === 'lat' 
+                    ? (coordinate >= 0 ? 'N' : 'S')
+                    : (coordinate >= 0 ? 'E' : 'W');
+                
+                return `${degrees}°${minutes}'${seconds}"${direction}`;
+            }
+            
+            return `${toDMS(lat, 'lat')} ${toDMS(lng, 'lng')}`;
+        }
+        
+        // Make export function globally accessible for debugging
+        window.exportFormData = exportFormData;
+        window.validateLocation = validateLocation;
+        
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('Application error:', e.error);
+            showError('⚠️ An unexpected error occurred. Please refresh the page and try again.');
+        });
+        
+        // Prevent form submission on Enter in number inputs
+        document.getElementById('favNumberInput').addEventListener('keydown', function(e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Add visual feedback for successful actions
+        function addSuccessAnimation(element) {
+            element.style.animation = 'none';
+            element.offsetHeight; // Trigger reflow
+            element.style.animation = 'celebration 0.6s ease-out';
+        }
+        
+        // Initialize tooltips and help text
+        function initializeHelpSystem() {
+            const helpTexts = {
+                'nameInput': 'Enter your full legal name as it appears on your ID',
+                'favNumberInput': 'Any number that has special meaning to you (1-999999)',
+                'favPersonInput': 'Someone who is important in your life (family, friend, etc.)'
+            };
+            
+            Object.keys(helpTexts).forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.title = helpTexts[id];
+                }
+            });
+        }
+        
+        // Call initialization
+        setTimeout(() => {
+            initializeHelpSystem();
+        }, 500);
     </script>
 </body>
 </html>
